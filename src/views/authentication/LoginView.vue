@@ -37,6 +37,7 @@
 import { useAuthStore } from '@/stores/auth'
 import type { Rule } from 'ant-design-vue/es/form'
 import { reactive } from 'vue'
+
 interface FormState {
   username: string
   password: string

@@ -48,10 +48,6 @@ const open = ref<boolean>(false)
 
 const handleKeydown = (event: KeyboardEvent) => {
   const { altKey, ctrlKey, shiftKey, shortcutKey } = props
-  console.log('altKey:', altKey)
-  console.log('ctrlKey:', ctrlKey)
-  console.log('shiftKey:', shiftKey)
-  console.log('event:', event)
 
   if (
     (altKey === undefined || event.altKey === altKey) &&

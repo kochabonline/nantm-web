@@ -4,7 +4,6 @@
     <a-layout>
       <Header />
       <Content />
-      <Footer />
     </a-layout>
   </a-layout>
 </template>
@@ -13,7 +12,6 @@
 import Sider from '@/layout/sider/SiderView.vue'
 import Header from '@/layout/header/HeaderView.vue'
 import Content from '@/layout/content/ContentView.vue'
-import Footer from '@/layout/footer/FooterView.vue'
 </script>
 
 <style scoped lang="less">

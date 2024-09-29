@@ -1,16 +1,24 @@
 import { defineStore } from 'pinia'
+import type { User } from '@/types/user'
+import { GetUserInfo } from '@/api/modules/user'
 
-export const userStore = defineStore('user', {
+export const useUserStore = defineStore('user', {
   state: () => ({
-    name: '',
-    age: 0
+    userInfo: {} as User
   }),
-  getters: {
-    getAge: (state) => state.age
-  },
+  getters: {},
   actions: {
-    setAge(age: number) {
-      this.age = age
+    async getUserInfo(id: number) {
+      try {
+        const response = await GetUserInfo(id)
+        if (response.code === 200) {
+          this.userInfo = response.data || {}
+        } else {
+          return Promise.reject(new Error(response.reason))
+        }
+      } catch (error) {
+        return Promise.reject(error)
+      }
     }
   }
 })

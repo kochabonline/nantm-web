@@ -7,8 +7,16 @@ const Access = async (to: any) => {
   }
 }
 
+const Fetch = async () => {
+  const authStore = useAuthStore()
+
+  if (authStore.isAuthenticated && !authStore.isFetchUserInfo) {
+    authStore.getUserInfo()
+  }
+}
+
 const DocumentTitle = (to: any) => {
   document.title = to.meta.title || 'Vue'
 }
 
-export { Access, DocumentTitle }
+export { Access, Fetch, DocumentTitle }
