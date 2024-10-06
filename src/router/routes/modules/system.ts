@@ -1,4 +1,4 @@
-import { CompassOutlined, LaptopOutlined } from '@ant-design/icons-vue'
+import { LaptopOutlined, UserOutlined } from '@ant-design/icons-vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -10,16 +10,16 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '系统管理',
       icon: LaptopOutlined,
-      order: 1
+      order: 2
     },
     children: [
       {
-        path: '/system/about',
-        name: 'About',
-        component: () => import('@/views/system/AboutView.vue'),
+        path: '/system/account',
+        name: 'Account',
+        component: () => import('@/views/system/AccountView.vue'),
         meta: {
-          title: '关于',
-          icon: CompassOutlined
+          title: '账户管理',
+          icon: UserOutlined
         }
       }
     ]

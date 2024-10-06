@@ -36,9 +36,7 @@ export const useRouteStore = defineStore('route', {
             return menu
           })
           .sort((a, b) => {
-            const orderA = a.meta.order as number
-            const orderB = b.meta.order as number
-            return orderA - orderB
+            return (a.meta.order as number) - (b.meta.order as number)
           })
       }
 

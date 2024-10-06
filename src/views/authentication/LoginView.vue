@@ -56,8 +56,8 @@ const rules: Record<string, Rule[]> = {
 
 const authStore = useAuthStore()
 
-const onFinish = (values: FormState) => {
-  authStore.login(values)
+const onFinish = async (values: FormState) => {
+  await authStore.login(values)
 }
 </script>
 

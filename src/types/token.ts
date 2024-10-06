@@ -1,4 +1,7 @@
-export interface Token {
+/**
+ * @zh_CN token模型
+ */
+interface Token {
   /**
    * @zh_CN 主键
    */
@@ -41,7 +44,10 @@ export interface Token {
   deleted_at: number | null
 }
 
-export interface LoginRequest {
+/**
+ * @zh_CN 登录请求
+ */
+interface LoginRequest {
   /**
    * @zh_CN 用户名
    */
@@ -52,7 +58,10 @@ export interface LoginRequest {
   password: string
 }
 
-export interface LogoutRequest {
+/**
+ * @zh_CN 退出登录请求
+ */
+interface LogoutRequest {
   /**
    * @zh_CN 访问令牌
    */
@@ -62,3 +71,5 @@ export interface LogoutRequest {
    */
   refresh_token: string
 }
+
+export type { Token, LoginRequest, LogoutRequest }

@@ -12,14 +12,14 @@ export const useAuthStore = defineStore('auth', {
     remember: false,
     fetchUserInfo: false,
     user_id: Number(localStorage.getItem('info.userId')) || 0,
-    accessToken: sessionStorage.getItem('session.accessToken') || '',
-    refreshToken: sessionStorage.getItem('session.refreshToken') || ''
+    accessToken: localStorage.getItem('session.accessToken') || '',
+    refreshToken: localStorage.getItem('session.refreshToken') || ''
   }),
   persist: [
     {
       key: 'session',
       pick: ['accessToken', 'refreshToken'],
-      storage: sessionStorage
+      storage: localStorage
     },
     {
       key: 'info',
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
           }
           router.push(redirect)
         } else {
-          return Promise.reject(new Error(response.reason))
+          throw new Error(response.reason)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -76,13 +76,16 @@ export const useAuthStore = defineStore('auth', {
           const currentRoute = router.currentRoute.value.fullPath
           router.push({ name: 'Login', query: { redirect: currentRoute } })
         } else {
-          return Promise.reject(new Error(response.reason))
+          throw new Error(response.reason)
         }
       } catch (error) {
         return Promise.reject(error)
       }
     },
-    // 获取用户信息
+    /**
+     * 获取用户信息
+     * @returns 用户信息
+     */
     async getUserInfo() {
       const userStore = useUserStore()
       if (this.fetchUserInfo) return

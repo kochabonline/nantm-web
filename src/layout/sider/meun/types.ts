@@ -1,3 +1,4 @@
+import type { MenuMode, MenuTheme } from 'ant-design-vue'
 import type { Component } from 'vue'
 import type { RouteMeta } from 'vue-router'
 
@@ -8,15 +9,15 @@ interface MenuProps {
    */
   collapsed?: boolean
   /**
-   * @zh_CN 当前展开的 SubMenu 菜单项 key 数组
-   * @default []
+   * @zh_CN 菜单类型，现在支持垂直、水平、和内嵌模式三种 vertical | horizontal | inline
+   * @default inline
    */
-  openKeys?: string[]
+  mode?: MenuMode
   /**
-   * @zh_CN 当前选中的菜单项 key 数组
-   * @default []
+   * @zh_CN 主题颜色
+   * @default light
    */
-  selectedKeys?: string[]
+  theme?: MenuTheme
 }
 
 interface Menu {

@@ -1,4 +1,7 @@
-export interface Response<T = any> {
+/**
+ * @zh_CN 响应数据
+ */
+interface Response<T = any> {
   /**
    * @zh_CN 状态码
    */
@@ -12,3 +15,5 @@ export interface Response<T = any> {
    */
   reason: string
 }
+
+export type { Response }

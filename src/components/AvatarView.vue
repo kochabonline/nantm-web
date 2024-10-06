@@ -45,9 +45,9 @@ import ShortcutView from './ShortcutView.vue'
 const authStore = useAuthStore()
 const userStore = useUserStore()
 
-const onClick: MenuProps['onClick'] = ({ key }) => {
+const onClick: MenuProps['onClick'] = async ({ key }) => {
   if (key === 'Logout') {
-    authStore.logout()
+    await authStore.logout()
   } else {
     router.push({ name: `${key}` })
   }
