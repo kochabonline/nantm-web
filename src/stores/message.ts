@@ -1,7 +1,15 @@
-import { GetMessages, GetChannels, AddChannel } from '@/api/modules/message'
-import type { Channels, ChannelColumn, MessageColumn, Messages, CreateChannelRequest } from '@/types/message'
-import dayjs from 'dayjs'
+import { GetMessages, GetChannels, AddChannel, DeleteChannel } from '@/api/modules/message'
+import type {
+  Channels,
+  ChannelColumn,
+  MessageColumn,
+  Messages,
+  CreateChannelRequest,
+  DeleteChannelRequest,
+  MessagePaginationRequest
+} from '@/types/message'
 import { defineStore } from 'pinia'
+import { formatDate } from '@/utils/format'
 
 export const useMessageStore = defineStore('message', {
   state: () => ({
@@ -11,12 +19,12 @@ export const useMessageStore = defineStore('message', {
     channelsData: [] as ChannelColumn[]
   }),
   actions: {
-    async getMessages() {
+    async getMessages(data: MessagePaginationRequest) {
       try {
-        const response = await GetMessages()
+        const response = await GetMessages(data)
         if (response.code === 200) {
           this.messages = response.data
-          await this.getMessagesData()
+          this.getMessagesData()
         } else {
           throw new Error(response.reason)
         }
@@ -29,7 +37,7 @@ export const useMessageStore = defineStore('message', {
         const response = await GetChannels()
         if (response.code === 200) {
           this.channels = response.data
-          await this.getChannelsData()
+          this.getChannelsData()
         } else {
           throw new Error(response.reason)
         }
@@ -49,30 +57,39 @@ export const useMessageStore = defineStore('message', {
         return Promise.reject(error)
       }
     },
-    async getMessagesData() {
-      this.messagesData = this.messages.items.map((item, index) => {
-        if (typeof item.created_at === 'number') {
-          item.created_at = dayjs.unix(item.created_at).format('YYYY-MM-DD HH:mm:ss')
+    async deleteChannel(data: DeleteChannelRequest) {
+      try {
+        const response = await DeleteChannel(data)
+        if (response.code === 200) {
+          return 'ok'
+        } else {
+          throw new Error(response.reason)
         }
-
-        return {
-          key: index,
-          ...item
-        }
-      })
+      } catch (error) {
+        return Promise.reject(error)
+      }
     },
-    async getChannelsData() {
-      this.channelsData = this.channels.items.map((item, index) => {
-        if (typeof item.created_at === 'number') {
-          item.created_at = dayjs.unix(item.created_at).format('YYYY-MM-DD HH:mm:ss')
-        }
-
-        return {
-          // TODO: 使用id作为key
-          key: index,
-          ...item
-        }
-      })
+    getMessagesData() {
+      if (this.messages && Array.isArray(this.messages.items)) {
+        this.messagesData = this.messages.items.map((item, index) => {
+          return {
+            ...item,
+            key: index,
+            created_at: formatDate(item.created_at)
+          }
+        })
+      }
+    },
+    getChannelsData() {
+      if (this.channels && Array.isArray(this.channels.items)) {
+        this.channelsData = this.channels.items.map((item, index) => {
+          return {
+            ...item,
+            key: index,
+            created_at: formatDate(item.created_at)
+          }
+        })
+      }
     }
   }
 })

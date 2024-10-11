@@ -1,5 +1,5 @@
 <template>
-  <a-modal ref="modalRef" :wrap-style="{ overflow: 'hidden' }" cancelText="取消" okText="确定">
+  <a-modal ref="modalRef" :wrap-style="{ overflow: 'hidden' }">
     <template #default>
       <slot />
     </template>

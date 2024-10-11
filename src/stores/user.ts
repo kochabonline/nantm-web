@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import dayjs from 'dayjs'
 import type { CreateUserRequest, User, Users, UserColumn } from '@/types/user'
 import { AddUser, DeleteUser, GetUserInfo, GetUserList } from '@/api/modules/user'
+import { formatDate } from '@/utils/format'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -91,13 +91,11 @@ export const useUserStore = defineStore('user', {
               item.status = '未知'
           }
         }
-        if (typeof item.created_at === 'number') {
-          item.created_at = dayjs.unix(item.created_at).format('YYYY-MM-DD HH:mm:ss')
-        }
 
         return {
+          ...item,
           key: item.id,
-          ...item
+          created_at: formatDate(item.created_at)
         }
       })
     }

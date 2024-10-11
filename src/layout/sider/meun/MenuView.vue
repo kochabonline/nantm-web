@@ -87,7 +87,11 @@ const setDefaultKeys = () => {
 
 // 首次渲染时设置默认选中项
 onMounted(() => {
-  setDefaultKeys()
+  try {
+    setDefaultKeys()
+  } catch (error) {
+    /* empty */
+  }
 })
 // TODO: 组件重新渲染时还原之前的选中项(暂时先设置成默认选中项)
 // watch(() => props.menus, setDefaultKeys)

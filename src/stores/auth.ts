@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { defineStore } from 'pinia'
 
-import { Login, Logout } from '@/api/modules/auth'
-import type { LoginRequest, LogoutRequest } from '@/types/token'
+import { Login, Logout, Refresh } from '@/api/modules/auth'
+import type { LoginRequest, LogoutRequest, RefreshRequest } from '@/types/token'
 import router from '@/router'
 import { useUserStore } from './user'
 
@@ -42,9 +42,9 @@ export const useAuthStore = defineStore('auth', {
 
         const response = await Login(req)
         if (response.code === 200) {
+          this.user_id = response.data?.user_id || 0
           this.accessToken = response.data?.access_token || ''
           this.refreshToken = response.data?.refresh_token || ''
-          this.user_id = response.data?.user_id || 0
 
           // 存在 redirect 查询参数，则跳转到该地址
           const redirect = (router.currentRoute.value.query.redirect as string) || {
@@ -75,6 +75,25 @@ export const useAuthStore = defineStore('auth', {
           // 在退出登录后，将当前地址作为查询参数附加到登录路由中
           const currentRoute = router.currentRoute.value.fullPath
           router.push({ name: 'Login', query: { redirect: currentRoute } })
+        } else {
+          throw new Error(response.reason)
+        }
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    /**
+     * 刷新 token
+     */
+    async refresh() {
+      try {
+        const response = await Refresh({
+          access_token: this.accessToken,
+          refresh_token: this.refreshToken
+        })
+        if (response.code === 200) {
+          this.accessToken = response.data?.access_token || ''
+          this.refreshToken = response.data?.refresh_token || ''
         } else {
           throw new Error(response.reason)
         }

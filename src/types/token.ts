@@ -72,4 +72,18 @@ interface LogoutRequest {
   refresh_token: string
 }
 
-export type { Token, LoginRequest, LogoutRequest }
+/**
+ * @zh_CN 刷新令牌请求
+ */
+interface RefreshRequest {
+  /**
+   * @zh_CN 访问令牌
+   */
+  access_token: string
+  /**
+   * @zh_CN 刷新令牌
+   */
+  refresh_token: string
+}
+
+export type { Token, LoginRequest, LogoutRequest, RefreshRequest }

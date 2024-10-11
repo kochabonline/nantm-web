@@ -1,38 +1,25 @@
 <template>
-  <div>
-    <Table :loading="loading" :columns="columns" :data="data" :pagination="pagination">
-      <template #addBodyCell="{ column, text }">
-        <template v-if="column.key === 'status'">
-          <a-tag v-if="text === 'pending'" color="orange">{{ text }}</a-tag>
-          <a-tag v-else-if="text === 'success'" color="green">{{ text }}</a-tag>
-          <a-tag v-else-if="text === 'failed'" color="red">{{ text }}</a-tag>
-        </template>
-      </template>
-    </Table>
-  </div>
+  <Table :loading="loading" :columns="columns" :data="data" :pagination="pagination"></Table>
 </template>
 
 <script setup lang="ts">
 import Table from '@/components/TableView.vue'
-import { reactive, ref } from 'vue'
-import { useMessageStore } from '@/stores/message'
-import { onBeforeMount } from 'vue'
-import type { MessageColumn, MessagePaginationRequest } from '@/types/message'
+import type { RolePaginationRequest } from '@/types/role'
+import { onBeforeMount, reactive, ref } from 'vue'
 
-const messageStore = useMessageStore()
+// 表格列
 const columns = [
-  { title: '标题', dataIndex: 'title', key: 'title' },
-  { title: '内容', dataIndex: 'content', key: 'content' },
-  { title: '状态', dataIndex: 'status', key: 'status' },
+  { title: '角色名称', dataIndex: 'name', key: 'name' },
+  { title: '角色描述', dataIndex: 'description', key: 'description' },
   { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
-  { title: '附加信息', key: 'payload', dataIndex: 'payload' }
+  { title: '操作', key: 'action', dataIndex: 'action' }
 ]
 // 查询参数
-const params = reactive({} as MessagePaginationRequest)
+const params = reactive({} as RolePaginationRequest)
 // 加载状态
 const loading = ref(false)
 // 表格数据
-const data = ref([] as MessageColumn[])
+const data = ref([])
 // 总数
 const total = ref(0)
 const current = ref(1)
@@ -63,11 +50,8 @@ const onShowSizeChange = async (current: number, size: number) => {
   await fetchData(params)
 }
 
-const fetchData = async (params: MessagePaginationRequest) => {
+const fetchData = async (params: RolePaginationRequest) => {
   loading.value = true
-  await messageStore.getMessages(params)
-  data.value = messageStore.messagesData
-  total.value = messageStore.messages.total
   pagination.total = total.value
   pagination.current = params.page
   loading.value = false

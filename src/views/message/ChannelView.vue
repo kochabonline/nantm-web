@@ -34,7 +34,7 @@
                 <a-input v-model:value="emailFormState.host" placeholder="请输入" />
               </a-form-item>
               <a-form-item name="port" label="端口">
-                <a-input v-model:value="emailFormState.port" placeholder="默认: 25" />
+                <a-input-number v-model:value="emailFormState.port" :controls="false" />
               </a-form-item>
             </a-form>
             <a-form
@@ -44,17 +44,17 @@
               :rules="smsRules"
               v-bind="innerlayout"
             >
-              <a-form-item name="accessKey" label="AccessKey">
-                <a-input v-model:value="smsFormState.accessKey" placeholder="请输入" />
+              <a-form-item name="access_key" label="AccessKey">
+                <a-input v-model:value="smsFormState.access_key" placeholder="请输入" />
               </a-form-item>
-              <a-form-item name="Secret" label="Secret">
-                <a-input v-model:value="smsFormState.Secret" placeholder="请输入" />
+              <a-form-item name="secret" label="Secret">
+                <a-input v-model:value="smsFormState.secret" placeholder="请输入" />
               </a-form-item>
-              <a-form-item name="signName" label="签名">
-                <a-input v-model:value="smsFormState.signName" placeholder="请输入" />
+              <a-form-item name="sign_name" label="签名">
+                <a-input v-model:value="smsFormState.sign_name" placeholder="请输入" />
               </a-form-item>
-              <a-form-item name="templateCode" label="模板">
-                <a-input v-model:value="smsFormState.templateCode" placeholder="请输入" />
+              <a-form-item name="template_code" label="模板">
+                <a-input v-model:value="smsFormState.template_code" placeholder="请输入" />
               </a-form-item>
             </a-form>
             <a-form
@@ -96,7 +96,7 @@
                 <a-input v-model:value="telegramFormState.token" placeholder="请输入" />
               </a-form-item>
               <a-form-item name="chat_id" label="Chat ID">
-                <a-input v-model:value="telegramFormState.chat_id" placeholder="请输入" />
+                <a-input-number v-model:value="telegramFormState.chat_id" :controls="false" />
               </a-form-item>
             </a-form>
             <a-form-item name="limiter" label="限速器">
@@ -110,13 +110,16 @@
               v-bind="innerlayout"
             >
               <a-form-item name="capacity" label="容量大小">
-                <a-input
+                <a-input-number
                   v-model:value="tokenBucketLimiterFormState.capacity"
-                  placeholder="请输入"
+                  :controls="false"
                 />
               </a-form-item>
               <a-form-item name="rate" label="速率大小">
-                <a-input v-model:value="tokenBucketLimiterFormState.rate" placeholder="请输入" />
+                <a-input-number
+                  v-model:value="tokenBucketLimiterFormState.rate"
+                  :controls="false"
+                />
               </a-form-item>
             </a-form>
             <a-form
@@ -127,13 +130,16 @@
               v-bind="innerlayout"
             >
               <a-form-item name="window" label="窗口大小">
-                <a-input
+                <a-input-number
                   v-model:value="slidingWindowLimiterFormState.window"
-                  placeholder="请输入"
+                  :controls="false"
                 />
               </a-form-item>
               <a-form-item name="limit" label="窗口限制">
-                <a-input v-model:value="slidingWindowLimiterFormState.limit" placeholder="请输入" />
+                <a-input-number
+                  v-model:value="slidingWindowLimiterFormState.limit"
+                  :controls="false"
+                />
               </a-form-item>
             </a-form>
             <a-form-item name="description" label="描述">
@@ -160,9 +166,9 @@
                 title="是否确定删除?"
                 ok-text="确认"
                 cancel-text="取消"
-                @confirm="onDelete(record.id)"
+                @confirm="onDelete(record.token)"
               >
-                <a-tooltip title="删除用户" placement="bottom">
+                <a-tooltip title="删除通道" placement="bottom">
                   <a-button danger :icon="h(DeleteOutlined)" />
                 </a-tooltip>
               </a-popconfirm>
@@ -214,9 +220,9 @@ const columns = [
 const formRef = ref<FormInstance>()
 const formState = reactive({
   name: '',
-  provider: providerMap[providerValue.value],
+  provider: '',
   channelProvider: '',
-  limiter: limiterMap[limiterValue.value],
+  limiter: '',
   channelLimiter: '',
   description: ''
 })
@@ -232,14 +238,14 @@ interface emailProvider {
   username: string
   password: string
   host: string
-  port: number
+  port: string
 }
 const emailFormRef = ref<FormInstance>()
 const emailFormState = reactive<emailProvider>({
   username: '',
   password: '',
   host: '',
-  port: 25
+  port: '25'
 })
 const emailRules: Record<string, Rule[]> = {
   username: [{ required: true, message: '请输入邮件服务账号' }],
@@ -248,21 +254,21 @@ const emailRules: Record<string, Rule[]> = {
 }
 
 interface smsProvider {
-  accessKey: string
-  Secret: string
-  signName: string
-  templateCode: string
+  access_key: string
+  secret: string
+  sign_name: string
+  template_code: string
 }
 const smsFormRef = ref<FormInstance>()
 const smsFormState = reactive<smsProvider>({
-  accessKey: '',
-  Secret: '',
-  signName: '',
-  templateCode: ''
+  access_key: '',
+  secret: '',
+  sign_name: '',
+  template_code: ''
 })
 const smsRules: Record<string, Rule[]> = {
-  accessKey: [{ required: true, message: '请输入短信access key' }],
-  Secret: [{ required: true, message: '请输入短信secret' }]
+  access_key: [{ required: true, message: '请输入短信access key' }],
+  secret: [{ required: true, message: '请输入短信secret' }]
 }
 
 interface feishuProvider {
@@ -306,13 +312,13 @@ const dingtalkRules: Record<string, Rule[]> = {
 }
 
 interface tokenBucketLimiter {
-  capacity: number
-  rate: number
+  capacity: string
+  rate: string
 }
 const tokenBucketLimiterFormRef = ref<FormInstance>()
 const tokenBucketLimiterFormState = reactive<tokenBucketLimiter>({
-  capacity: 0,
-  rate: 0
+  capacity: '',
+  rate: ''
 })
 const tokenBucketLimiterRules: Record<string, Rule[]> = {
   capacity: [{ required: true, message: '请输入容量' }, { validator: validateGTZero }],
@@ -320,13 +326,13 @@ const tokenBucketLimiterRules: Record<string, Rule[]> = {
 }
 
 interface slidingWindowLimiter {
-  window: number
-  limit: number
+  window: string
+  limit: string
 }
 const slidingWindowLimiterFormRef = ref<FormInstance>()
 const slidingWindowLimiterFormState = reactive<slidingWindowLimiter>({
-  window: 0,
-  limit: 0
+  window: '',
+  limit: ''
 })
 const slidingWindowLimiterRules: Record<string, Rule[]> = {
   window: [{ required: true, message: '请输入窗口大小' }, { validator: validateGTZero }],
@@ -400,12 +406,13 @@ const handleOk = () => {
       // 组装数据
       const data = {
         name: formState.name,
-        provider: formState.provider,
+        provider: providerMap[providerValue.value],
         channel_provider: formState.channelProvider,
-        limiter: formState.limiter,
+        limiter: limiterMap[limiterValue.value],
         channel_limiter: formState.channelLimiter,
         description: formState.description
       }
+
       // 提交表单数据
       await messageStore.addChannel(data)
 
@@ -457,8 +464,8 @@ const handleOk = () => {
   validateForms()
 }
 
-const onDelete = async (id: number) => {
-  console.log('删除通道:', id)
+const onDelete = async (token: string) => {
+  await messageStore.deleteChannel({ token })
   // 删除后重新获取通道列表
   await messageStore.getChannels()
 }

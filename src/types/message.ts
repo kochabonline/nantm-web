@@ -140,6 +140,52 @@ interface CreateChannelRequest {
   description: string
 }
 
+/**
+ * 删除通道请求
+ */
+interface DeleteChannelRequest {
+  /**
+   * 通道Token
+   */
+  token: string
+}
+
+/**
+ * 消息分页查询请求
+ */
+interface MessagePaginationRequest {
+  /**
+   * 页码
+   */
+  page: number
+  /**
+   * 每页数量
+   */
+  size: number
+  /**
+   * 关键字
+   */
+  keyword: string
+}
+
+/**
+ * 通道分页查询请求
+ */
+interface ChannelPaginationRequest {
+  /**
+   * 页码
+   */
+  page: number
+  /**
+   * 每页数量
+   */
+  size: number
+  /**
+   * 关键字
+   */
+  keyword: string
+}
+
 export type {
   Message,
   Messages,
@@ -147,5 +193,8 @@ export type {
   Channel,
   Channels,
   ChannelColumn,
-  CreateChannelRequest
+  CreateChannelRequest,
+  DeleteChannelRequest,
+  MessagePaginationRequest,
+  ChannelPaginationRequest
 }

@@ -21,6 +21,15 @@ const routes: RouteRecordRaw[] = [
           title: '账户管理',
           icon: UserOutlined
         }
+      },
+      {
+        path: '/system/role',
+        name: 'Role',
+        component: () => import('@/views/system/RoleView.vue'),
+        meta: {
+          title: '角色管理',
+          icon: UserOutlined
+        }
       }
     ]
   }
