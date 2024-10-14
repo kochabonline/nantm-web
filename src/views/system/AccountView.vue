@@ -26,41 +26,19 @@
       </DraggableModal>
     </div>
     <div>
-      <a-table :columns="columns" :data-source="userStore.data">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'action'">
-            <span>
-              <a-tooltip title="编辑" placement="bottom">
-                <a-button type="primary" ghost :icon="h(EditOutlined)" />
-              </a-tooltip>
-              <a-divider type="vertical" />
-              <a-popconfirm
-                title="是否确定删除?"
-                ok-text="确认"
-                cancel-text="取消"
-                @confirm="onDelete(record.id)"
-              >
-                <a-tooltip title="删除用户" placement="bottom">
-                  <a-button danger :icon="h(DeleteOutlined)" />
-                </a-tooltip>
-              </a-popconfirm>
-              <a-divider type="vertical" />
-            </span>
-          </template>
-        </template>
-      </a-table>
+      <Table :columns="columns" :data="userStore.data" :onDelete="Delete" copyKey="token"></Table>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
-import { onBeforeMount, h, ref, reactive } from 'vue'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
-import DraggableModal from '@/components/DraggableView.vue'
+import { onBeforeMount, ref, reactive } from 'vue'
+import DraggableModal from '@/components/draggable/DraggableView.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { CreateUserRequest } from '@/types/user'
+import Table from '@/components/table/TableView.vue'
 
 const userStore = useUserStore()
 const columns = [
@@ -77,7 +55,7 @@ const formState = reactive<CreateUserRequest>({
   nickname: '',
   password: '',
   email: '',
-  role: 0
+  role: ''
 })
 const rules: Record<string, Rule[]> = {
   username: [{ required: true, message: '请输入用户名' }],
@@ -107,7 +85,8 @@ const layout = {
   wrapperCol: { span: 14 }
 }
 
-const onDelete = async (id: number) => {
+const Delete = async (record: any) => {
+  const { id } = record
   await userStore.deleteUser(id)
   // 删除后重新获取用户列表
   await userStore.getUserList()

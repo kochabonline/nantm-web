@@ -1,4 +1,4 @@
-import { IdcardOutlined, MessageOutlined, NotificationOutlined } from '@ant-design/icons-vue'
+import { MessageOutlined, NotificationOutlined } from '@ant-design/icons-vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/message/ControlView.vue'),
         meta: {
           title: '控制台',
-          icon: IdcardOutlined
+          icon: 'icon-kongzhitai',
         }
       },
       {
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/message/ChannelView.vue'),
         meta: {
           title: '通道',
-          icon: NotificationOutlined
+          icon: NotificationOutlined,
         }
       }
     ]

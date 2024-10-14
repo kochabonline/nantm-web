@@ -3,6 +3,7 @@ import type { Menu } from '@/layout/sider/meun/types'
 import routes from '@/router/routes'
 import { h, type DefineComponent } from 'vue'
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
+import { iconComponent } from '@/utils/icon'
 
 export const useRouteStore = defineStore('route', {
   state: () => ({
@@ -29,7 +30,7 @@ export const useRouteStore = defineStore('route', {
               key: name as string,
               title: title,
               label: title,
-              icon: () => h((meta?.icon as DefineComponent) || 'span'),
+              icon: iconComponent(meta?.icon as DefineComponent | String),
               children: children ? processRoutes(children) : undefined,
               meta: meta as RouteMeta
             }

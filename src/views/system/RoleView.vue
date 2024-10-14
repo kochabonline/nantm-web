@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import Table from '@/components/TableView.vue'
+import Table from '@/components/table/TableView.vue'
 import type { RolePaginationRequest } from '@/types/role'
 import { onBeforeMount, reactive, ref } from 'vue'
 

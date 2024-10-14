@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
     path: '/system',
     name: 'System',
     component: () => import('@/layout/LayoutView.vue'),
-    redirect: { name: 'About' },
+    redirect: { name: 'Account' },
     meta: {
       title: '系统管理',
       icon: LaptopOutlined,
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/RoleView.vue'),
         meta: {
           title: '角色管理',
-          icon: UserOutlined
+          icon: 'icon-role'
         }
       }
     ]

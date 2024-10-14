@@ -28,26 +28,34 @@ instance.interceptors.response.use(
     return response.data
   },
   async (error) => {
+    const authStore = useAuthStore()
+
+    const accessTokenExpired = authStore.accessTokenExp < Date.now() / 1000
+    const refreshTokenExpired = authStore.refreshTokenExp < Date.now() / 1000
+
     if (error.response) {
       const { status, data, config } = error.response
-      const authStore = useAuthStore()
-      if (status === 401 && data.reason === '访问令牌已过期') {
+
+      if (status === 401 && accessTokenExpired && !refreshTokenExpired && !config._retry) {
         try {
+          config._retry = true
+
           await authStore.refresh()
-          // 从新设置 access_token
           config.headers['token'] = authStore.accessToken
-          // 重新请求
-          return instance.request(config)
+
+          return instance(config)
         } catch (error) {
           authStore.logout()
           router.push({ name: 'Login' })
         }
-      } else if (status === 401 && data.reason === '登录已过期') {
-        message.error('登录已过期，请重新登录')
+      } else if (status === 401 && refreshTokenExpired) {
+        authStore.reset()
+        message.error('登录已过期, 请重新登录')
         router.push({ name: 'Login' })
       } else if (status !== 200 && data.reason) {
         message.error(data.reason)
       }
+
       return Promise.reject(data)
     } else if (error.request) {
       message.error('网络错误, 请刷新重试')

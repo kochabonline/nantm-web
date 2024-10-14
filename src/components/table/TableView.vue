@@ -1,13 +1,21 @@
 <template>
   <a-table
+    class="table"
     :loading="props.loading"
     :columns="props.columns"
     :data-source="props.data"
     :pagination="props.pagination"
+    :scroll="props.scroll"
   >
     <template #bodyCell="{ text, record, index, column }">
       <slot name="addBodyCell" :column="column" :record="record" :text="text" :index="index" />
-      <template v-if="column.key === 'action' && record">
+      <template v-if="column.key === props.copyKey">
+        <span>
+          {{ text }}
+          <a-button type="link" :icon="props.copyIcon" @click="onCopy(text)" />
+        </span>
+      </template>
+      <template v-if="column.key === props.actionKey">
         <span>
           <a-tooltip title="编辑" placement="bottom" :onclick="props.onEdit(record)">
             <a-button type="primary" ghost :icon="props.editIcon" />
@@ -27,6 +35,13 @@
 
 <script setup lang="ts">
 const props = defineProps({
+  /**
+   * 滚动配置
+   */
+  scroll: {
+    type: Object,
+    default: () => ({ x: 'max-content' })
+  },
   /**
    * 加载状态
    */
@@ -77,6 +92,26 @@ const props = defineProps({
     default: () => h(DeleteOutlined)
   },
   /**
+   * 复制图标
+   */
+  copyIcon: {
+    type: Object,
+    default: () => h(CopyOutlined)
+  },
+  /**
+   * 操作key
+   */
+  actionKey: {
+    type: String,
+    default: 'action'
+  },
+  /**
+   * 复制key
+   */
+  copyKey: {
+    type: String
+  },
+  /**
    * 数据总量
    */
   total: {
@@ -103,7 +138,23 @@ const props = defineProps({
   }
 })
 import { h } from 'vue'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
+import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+import { useClipboard } from '@vueuse/core'
+
+const { isSupported, copy, copied } = useClipboard()
+
+// 复制事件
+const onCopy = (text: string) => {
+  if (!isSupported) {
+    message.error('当前浏览器不支持复制')
+    return
+  }
+  copy(text)
+  if (copied) {
+    message.success('复制成功')
+  }
+}
 </script>
 
 <style scoped lang="less"></style>

@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import Table from '@/components/TableView.vue'
+import Table from '@/components/table/TableView.vue'
 import { reactive, ref } from 'vue'
 import { useMessageStore } from '@/stores/message'
 import { onBeforeMount } from 'vue'
@@ -64,13 +64,19 @@ const onShowSizeChange = async (current: number, size: number) => {
 }
 
 const fetchData = async (params: MessagePaginationRequest) => {
-  loading.value = true
-  await messageStore.getMessages(params)
-  data.value = messageStore.messagesData
-  total.value = messageStore.messages.total
-  pagination.total = total.value
-  pagination.current = params.page
-  loading.value = false
+  try {
+    loading.value = true
+    await messageStore.getMessages(params)
+    data.value = messageStore.messagesData
+    total.value = messageStore.messages.total
+    pagination.total = total.value
+    pagination.current = params.page
+    loading.value = false
+  } catch (error) {
+    /* empty */
+  } finally {
+    loading.value = false
+  }
 }
 // 组件挂载到DOM之前加载数据
 onBeforeMount(async () => {

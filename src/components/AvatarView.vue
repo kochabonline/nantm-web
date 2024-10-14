@@ -40,7 +40,7 @@ import type { MenuProps } from 'ant-design-vue'
 import { iconComponent } from '@/utils/icon'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
-import ShortcutView from './ShortcutView.vue'
+import ShortcutView from './shortcut/ShortcutView.vue'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()

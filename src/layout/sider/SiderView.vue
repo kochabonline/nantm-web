@@ -1,5 +1,5 @@
 <template>
-  <a-layout-sider v-model:collapsed="collapsed" theme="light" collapsible>
+  <a-layout-sider class="layout-sider" v-model:collapsed="collapsed" theme="light" collapsible>
     <Logo />
     <Menu :menus="routeStore.getMenuRouter" />
   </a-layout-sider>
@@ -18,4 +18,12 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.layout-sider {
+  border-right: 1px solid #dcdcdc; /* 添加右边框线 */
+}
+
+::v-deep .ant-layout-sider-trigger {
+  border-right: 1px solid #dcdcdc; /* 添加右边框线 */
+}
+</style>

@@ -11,7 +11,7 @@ interface CreateUserRequest {
   // 邮箱
   email: string
   // 角色
-  role: number
+  role: string
 }
 
 /**

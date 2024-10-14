@@ -15,11 +15,13 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@vueuse/components": "^11.1.0",
     "@vueuse/core": "^11.1.0",
     "ant-design-vue": "~4.2.5",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
     "install": "^0.13.0",
+    "jwt-decode": "^4.0.0",
     "less": "^4.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^4.0.2",

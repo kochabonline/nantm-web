@@ -4,7 +4,7 @@
     <template v-for="(item, index) in route.matched" :key="item.path">
       <!-- 路由本身不可点击 -->
       <a-breadcrumb-item v-if="isLastComponent(index)">
-        {{ item.meta.title }}
+        <span>{{ item.meta.title }}</span>
       </a-breadcrumb-item>
       <a-breadcrumb-item v-else>
         <router-link :to="item.path">

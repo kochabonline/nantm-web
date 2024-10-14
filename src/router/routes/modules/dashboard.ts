@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/dashboard/DashboardView.vue'),
         meta: {
           title: '仪表盘',
-          icon: DashboardOutlined
+          icon: DashboardOutlined,
         }
       }
     ]

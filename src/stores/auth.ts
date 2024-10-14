@@ -1,35 +1,43 @@
 import { computed } from 'vue'
 import { defineStore } from 'pinia'
+import { jwtDecode, type JwtPayload } from 'jwt-decode'
 
 import { Login, Logout, Refresh } from '@/api/modules/auth'
 import type { LoginRequest, LogoutRequest, RefreshRequest } from '@/types/token'
 import router from '@/router'
 import { useUserStore } from './user'
 
+interface CustomJwtPayload extends JwtPayload {
+  exp: number
+  userId: number
+  userRole: string
+}
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     loading: false,
     remember: false,
     fetchUserInfo: false,
-    user_id: Number(localStorage.getItem('info.userId')) || 0,
-    accessToken: localStorage.getItem('session.accessToken') || '',
-    refreshToken: localStorage.getItem('session.refreshToken') || ''
+    accessToken: localStorage.getItem('token.accessToken') || '',
+    refreshToken: localStorage.getItem('token.refreshToken') || ''
   }),
   persist: [
     {
-      key: 'session',
+      key: 'token',
       pick: ['accessToken', 'refreshToken'],
-      storage: localStorage
-    },
-    {
-      key: 'info',
-      pick: ['user_id'],
       storage: localStorage
     }
   ],
   getters: {
     isAuthenticated: (state) => computed(() => !!state.accessToken).value,
-    isFetchUserInfo: (state) => computed(() => state.fetchUserInfo).value
+    isFetchUserInfo: (state) => computed(() => state.fetchUserInfo).value,
+    userId: (state) => computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userId).value,
+    userRole: (state) =>
+      computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userRole).value,
+    accessTokenExp: (state) =>
+      computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).exp).value,
+    refreshTokenExp: (state) =>
+      computed(() => jwtDecode<CustomJwtPayload>(state.refreshToken).exp).value
   },
   actions: {
     /**
@@ -42,9 +50,8 @@ export const useAuthStore = defineStore('auth', {
 
         const response = await Login(req)
         if (response.code === 200) {
-          this.user_id = response.data?.user_id || 0
-          this.accessToken = response.data?.access_token || ''
-          this.refreshToken = response.data?.refresh_token || ''
+          this.accessToken = response.data.access_token
+          this.refreshToken = response.data.refresh_token
 
           // 存在 redirect 查询参数，则跳转到该地址
           const redirect = (router.currentRoute.value.query.redirect as string) || {
@@ -66,7 +73,6 @@ export const useAuthStore = defineStore('auth', {
     async logout() {
       try {
         const req: LogoutRequest = {
-          access_token: this.accessToken,
           refresh_token: this.refreshToken
         }
         const response = await Logout(req)
@@ -87,13 +93,12 @@ export const useAuthStore = defineStore('auth', {
      */
     async refresh() {
       try {
-        const response = await Refresh({
-          access_token: this.accessToken,
+        const req: RefreshRequest = {
           refresh_token: this.refreshToken
-        })
+        }
+        const response = await Refresh(req)
         if (response.code === 200) {
-          this.accessToken = response.data?.access_token || ''
-          this.refreshToken = response.data?.refresh_token || ''
+          this.accessToken = response.data
         } else {
           throw new Error(response.reason)
         }
@@ -109,11 +114,17 @@ export const useAuthStore = defineStore('auth', {
       const userStore = useUserStore()
       if (this.fetchUserInfo) return
       try {
-        await userStore.getUserInfo(this.user_id)
+        await userStore.getUserInfo(this.userId)
         this.fetchUserInfo = true
       } catch (error) {
         return Promise.reject(error)
       }
+    },
+    /**
+     * 重置 store
+     */
+    async reset() {
+      this.$reset()
     }
   }
 })

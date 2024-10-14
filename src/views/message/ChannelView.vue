@@ -154,39 +154,22 @@
       </DraggableModal>
     </div>
     <div>
-      <a-table :columns="columns" :dataSource="messageStore.channelsData">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'action'">
-            <span>
-              <a-tooltip title="编辑" placement="bottom">
-                <a-button type="primary" ghost :icon="h(EditOutlined)" />
-              </a-tooltip>
-              <a-divider type="vertical" />
-              <a-popconfirm
-                title="是否确定删除?"
-                ok-text="确认"
-                cancel-text="取消"
-                @confirm="onDelete(record.token)"
-              >
-                <a-tooltip title="删除通道" placement="bottom">
-                  <a-button danger :icon="h(DeleteOutlined)" />
-                </a-tooltip>
-              </a-popconfirm>
-              <a-divider type="vertical" />
-            </span>
-          </template>
-        </template>
-      </a-table>
+      <Table
+        :columns="columns"
+        :data="messageStore.channelsData"
+        :onDelete="Delete"
+        copyKey="token"
+      ></Table>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, h, ref, reactive } from 'vue'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
-import DraggableModal from '@/components/DraggableView.vue'
+import { onBeforeMount, ref, reactive } from 'vue'
+import DraggableModal from '@/components/draggable/DraggableView.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import Table from '@/components/table/TableView.vue'
 import { useMessageStore } from '@/stores/message'
 
 const messageStore = useMessageStore()
@@ -238,14 +221,14 @@ interface emailProvider {
   username: string
   password: string
   host: string
-  port: string
+  port: number
 }
 const emailFormRef = ref<FormInstance>()
 const emailFormState = reactive<emailProvider>({
   username: '',
   password: '',
   host: '',
-  port: '25'
+  port: 25
 })
 const emailRules: Record<string, Rule[]> = {
   username: [{ required: true, message: '请输入邮件服务账号' }],
@@ -464,7 +447,8 @@ const handleOk = () => {
   validateForms()
 }
 
-const onDelete = async (token: string) => {
+const Delete = async (record: any) => {
+  const { token } = record
   await messageStore.deleteChannel({ token })
   // 删除后重新获取通道列表
   await messageStore.getChannels()

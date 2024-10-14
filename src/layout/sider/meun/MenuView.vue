@@ -60,29 +60,12 @@ const findParentKey = (
   return null
 }
 
-const findFirstChildKey = (menus: Menu[], key: string): string | null => {
-  for (const menu of menus) {
-    if (menu.key === key && menu.children && menu.children.length > 0) {
-      return menu.children[0].key
-    }
-    if (menu.children) {
-      const found = findFirstChildKey(menu.children, key)
-      if (found) {
-        return found
-      }
-    }
-  }
-  return null
-}
-
 const setDefaultKeys = () => {
-  if (props.menus.length > 0) {
-    const { key } = props.menus[0]
-    const childKey = findFirstChildKey(props.menus, key) || key
-    state.selectedKeys = [childKey]
-    state.openKeys = [key]
-    router.push({ name: childKey })
-  }
+  const currentKey = router.currentRoute.value.name?.toString() || ''
+  const currentParentKey = findParentKey(props.menus, currentKey) || currentKey
+
+  state.selectedKeys = [currentKey]
+  state.openKeys = [currentParentKey]
 }
 
 // 首次渲染时设置默认选中项
@@ -93,8 +76,15 @@ onMounted(() => {
     /* empty */
   }
 })
-// TODO: 组件重新渲染时还原之前的选中项(暂时先设置成默认选中项)
-// watch(() => props.menus, setDefaultKeys)
+
+// 监听 props 变化
+watch(
+  () => props.menus,
+  () => {
+    setDefaultKeys()
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped lang="less"></style>
