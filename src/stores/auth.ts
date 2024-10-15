@@ -10,6 +10,7 @@ import { useUserStore } from './user'
 interface CustomJwtPayload extends JwtPayload {
   exp: number
   userId: number
+  username: string
   userRole: string
 }
 
@@ -32,6 +33,7 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: (state) => computed(() => !!state.accessToken).value,
     isFetchUserInfo: (state) => computed(() => state.fetchUserInfo).value,
     userId: (state) => computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userId).value,
+    username: (state) => computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).username).value,
     userRole: (state) =>
       computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userRole).value,
     accessTokenExp: (state) =>

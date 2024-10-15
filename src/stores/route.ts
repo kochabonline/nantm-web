@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Menu } from '@/layout/sider/meun/types'
 import routes from '@/router/routes'
-import { h, type DefineComponent } from 'vue'
+import { type DefineComponent } from 'vue'
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { iconComponent } from '@/utils/icon'
 

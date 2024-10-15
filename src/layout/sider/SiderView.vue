@@ -23,7 +23,7 @@ onMounted(() => {
   border-right: 1px solid #dcdcdc; /* 添加右边框线 */
 }
 
-::v-deep .ant-layout-sider-trigger {
+:deep(.ant-layout-sider-trigger) {
   border-right: 1px solid #dcdcdc; /* 添加右边框线 */
 }
 </style>

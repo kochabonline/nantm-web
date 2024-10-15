@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, onBeforeUnmount, ref, type PropType } from 'vue'
+import { onMounted, onBeforeUnmount, ref, type PropType } from 'vue'
 
 type ShortcutHandler = () => void
 

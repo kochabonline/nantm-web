@@ -20,7 +20,12 @@
           </div>
         </div>
         <a-menu-divider />
-        <a-menu-item key="Logout" :icon="iconComponent('icon-exit')"> 退出登录 </a-menu-item>
+        <a-menu-item key="Logout" :icon="iconComponent('icon-exit')">
+          <div style="display: flex; justify-content: space-between">
+            <div>退出登录</div>
+            <div style="color: gray">Alt + Q</div>
+          </div>
+        </a-menu-item>
       </a-menu>
     </template>
   </a-dropdown>

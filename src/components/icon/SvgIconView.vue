@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { computed } from 'vue'
 
 const props = defineProps({

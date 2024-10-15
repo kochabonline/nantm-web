@@ -21,11 +21,11 @@ import type { MessageColumn, MessagePaginationRequest } from '@/types/message'
 
 const messageStore = useMessageStore()
 const columns = [
-  { title: '标题', dataIndex: 'title', key: 'title' },
-  { title: '内容', dataIndex: 'content', key: 'content' },
+  { title: '标题', dataIndex: 'title', key: 'title', ellipsis: true },
+  { title: '内容', dataIndex: 'content', key: 'content', ellipsis: true },
   { title: '状态', dataIndex: 'status', key: 'status' },
   { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
-  { title: '附加信息', key: 'payload', dataIndex: 'payload' }
+  { title: '附加信息', key: 'payload', dataIndex: 'payload', ellipsis: true }
 ]
 // 查询参数
 const params = reactive({} as MessagePaginationRequest)

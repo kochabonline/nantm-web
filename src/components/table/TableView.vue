@@ -1,36 +1,37 @@
 <template>
-  <a-table
-    class="table"
-    :loading="props.loading"
-    :columns="props.columns"
-    :data-source="props.data"
-    :pagination="props.pagination"
-    :scroll="props.scroll"
-  >
-    <template #bodyCell="{ text, record, index, column }">
-      <slot name="addBodyCell" :column="column" :record="record" :text="text" :index="index" />
-      <template v-if="column.key === props.copyKey">
-        <span>
-          {{ text }}
-          <a-button type="link" :icon="props.copyIcon" @click="onCopy(text)" />
-        </span>
-      </template>
-      <template v-if="column.key === props.actionKey">
-        <span>
-          <a-tooltip title="编辑" placement="bottom" :onclick="props.onEdit(record)">
-            <a-button type="primary" ghost :icon="props.editIcon" />
-          </a-tooltip>
-          <a-divider type="vertical" />
-          <a-popconfirm title="是否确定删除?" @confirm="props.onDelete(record)">
-            <a-tooltip title="删除" placement="bottom">
-              <a-button danger :icon="props.deleteIcon" />
+  <div :class="props.scrollClass">
+    <a-table
+      :loading="props.loading"
+      :columns="props.columns"
+      :data-source="props.data"
+      :pagination="props.pagination"
+      :scroll="localScroll"
+    >
+      <template #bodyCell="{ text, record, index, column }">
+        <slot name="addBodyCell" :column="column" :record="record" :text="text" :index="index" />
+        <template v-if="column.key === props.copyKey">
+          <span>
+            {{ text }}
+            <a-button type="link" :icon="props.copyIcon" @click="onCopy(text)" />
+          </span>
+        </template>
+        <template v-if="column.key === props.actionKey">
+          <span>
+            <a-tooltip title="编辑" placement="bottom" :onclick="props.onEdit(record)">
+              <a-button type="link" ghost :icon="props.editIcon" />
             </a-tooltip>
-          </a-popconfirm>
-          <a-divider type="vertical" />
-        </span>
+            <a-divider type="vertical" />
+            <a-popconfirm title="是否确定删除?" @confirm="props.onDelete(record)">
+              <a-tooltip title="删除" placement="bottom">
+                <a-button type="link" danger :icon="props.deleteIcon" />
+              </a-tooltip>
+            </a-popconfirm>
+            <a-divider type="vertical" />
+          </span>
+        </template>
       </template>
-    </template>
-  </a-table>
+    </a-table>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -38,9 +39,9 @@ const props = defineProps({
   /**
    * 滚动配置
    */
-  scroll: {
-    type: Object,
-    default: () => ({ x: 'max-content' })
+  scrollClass: {
+    type: String,
+    default: 'table'
   },
   /**
    * 加载状态
@@ -137,13 +138,13 @@ const props = defineProps({
     })
   }
 })
-import { h } from 'vue'
+import { h, onMounted, ref } from 'vue'
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useClipboard } from '@vueuse/core'
+import { calculateTableHeight } from '@/utils/table'
 
 const { isSupported, copy, copied } = useClipboard()
-
 // 复制事件
 const onCopy = (text: string) => {
   if (!isSupported) {
@@ -155,6 +156,17 @@ const onCopy = (text: string) => {
     message.success('复制成功')
   }
 }
+
+// 表格滚动配置, y轴高度自适应, 必须在挂载后计算
+const localScroll = ref({ x: 864, y: 500 })
+onMounted(() => {
+  localScroll.value.y = calculateTableHeight()
+})
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+// 表格高度未超出屏幕时，隐藏滚动条
+:deep(.ant-table-body, .ant-table-header) {
+  overflow-y: auto !important;
+}
+</style>

@@ -192,11 +192,11 @@ const providerValue = ref(provider[0])
 const limiterValue = ref(limiter[0])
 
 const columns = [
-  { title: '通道名称', dataIndex: 'name', key: 'name' },
+  { title: '通道名称', dataIndex: 'name', key: 'name', ellipsis: true },
   { title: '提供商', dataIndex: 'provider', key: 'provider' },
   { title: '限速器', dataIndex: 'limiter', key: 'limiter' },
   { title: '密钥', dataIndex: 'token', key: 'token' },
-  { title: '描述', dataIndex: 'description', key: 'description' },
+  { title: '描述', dataIndex: 'description', key: 'description', ellipsis: true, maxWidth: 24 },
   { title: '操作', key: 'action' }
 ]
 
