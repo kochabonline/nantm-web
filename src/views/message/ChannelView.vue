@@ -44,10 +44,10 @@
               :rules="smsRules"
               v-bind="innerlayout"
             >
-              <a-form-item name="access_key" label="AccessKey">
+              <a-form-item name="access_key" label="access key">
                 <a-input v-model:value="smsFormState.access_key" placeholder="请输入" />
               </a-form-item>
-              <a-form-item name="secret" label="Secret">
+              <a-form-item name="secret" label="secret">
                 <a-input v-model:value="smsFormState.secret" placeholder="请输入" />
               </a-form-item>
               <a-form-item name="sign_name" label="签名">
@@ -64,10 +64,10 @@
               :rules="dingtalkRules"
               v-bind="innerlayout"
             >
-              <a-form-item name="webhook" label="Webhook">
+              <a-form-item name="webhook" label="webhook">
                 <a-input v-model:value="dingtalkFormState.webhook" placeholder="请输入" />
               </a-form-item>
-              <a-form-item name="secret" label="Secret">
+              <a-form-item name="secret" label="secret">
                 <a-input v-model:value="dingtalkFormState.secret" placeholder="请输入" />
               </a-form-item>
             </a-form>
@@ -78,10 +78,10 @@
               :rules="feishuRules"
               v-bind="innerlayout"
             >
-              <a-form-item name="webhook" label="Webhook">
+              <a-form-item name="webhook" label="webhook">
                 <a-input v-model:value="feishuFormState.webhook" placeholder="请输入" />
               </a-form-item>
-              <a-form-item name="secret" label="Secret">
+              <a-form-item name="secret" label="secret">
                 <a-input v-model:value="feishuFormState.secret" placeholder="请输入" />
               </a-form-item>
             </a-form>
@@ -92,10 +92,10 @@
               :rules="telegramRules"
               v-bind="innerlayout"
             >
-              <a-form-item name="token" label="Token">
+              <a-form-item name="token" label="token">
                 <a-input v-model:value="telegramFormState.token" placeholder="请输入" />
               </a-form-item>
-              <a-form-item name="chat_id" label="Chat ID">
+              <a-form-item name="chat_id" label="chat id">
                 <a-input-number v-model:value="telegramFormState.chat_id" :controls="false" />
               </a-form-item>
             </a-form>
@@ -157,8 +157,8 @@
       <Table
         :columns="columns"
         :data="messageStore.channelsData"
-        :onDelete="Delete"
-        copyKey="token"
+        :clipboard="{ keys: ['token'] }"
+        :action="{ onDelete: Delete }"
       ></Table>
     </div>
   </div>
@@ -166,10 +166,10 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref, reactive } from 'vue'
-import DraggableModal from '@/components/draggable/DraggableView.vue'
+import DraggableModal from '@/components/draggable/index.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import Table from '@/components/table/TableView.vue'
+import Table from '@/components/table/index.vue'
 import { useMessageStore } from '@/stores/message'
 
 const messageStore = useMessageStore()

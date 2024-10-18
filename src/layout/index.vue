@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import Sider from '@/layout/sider/SiderView.vue'
-import Header from '@/layout/header/HeaderView.vue'
-import Content from '@/layout/content/ContentView.vue'
+import Sider from '@/layout/sider/index.vue'
+import Header from '@/layout/header/index.vue'
+import Content from '@/layout/content/index.vue'
 </script>
 
 <style scoped lang="less">

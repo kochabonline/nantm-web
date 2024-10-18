@@ -14,14 +14,14 @@ const props = defineProps({
     required: true
   },
   // 图标类名
-  iconClass: {
+  className: {
     type: String,
     default: 'icon'
   }
 })
 
 const iconName = computed(() => `#${props.icon}`)
-const className = computed(() => `${props.iconClass}`)
+const className = computed(() => `${props.className}`)
 </script>
 
 <style scoped lang="less">

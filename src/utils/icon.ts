@@ -1,4 +1,4 @@
-import SvgIcon from '@/components/icon/SvgIconView.vue'
+import SvgIcon from '@/components/icon/svg.vue'
 import { h, type Component } from 'vue'
 
 /**

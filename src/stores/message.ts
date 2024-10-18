@@ -1,8 +1,8 @@
 import { GetMessages, GetChannels, AddChannel, DeleteChannel } from '@/api/modules/message'
 import type {
   Channels,
-  ChannelColumn,
-  MessageColumn,
+  ChannelTableData,
+  MessageTableData,
   Messages,
   CreateChannelRequest,
   DeleteChannelRequest,
@@ -14,9 +14,9 @@ import { formatDate } from '@/utils/format'
 export const useMessageStore = defineStore('message', {
   state: () => ({
     messages: {} as Messages,
-    messagesData: [] as MessageColumn[],
+    messagesData: [] as MessageTableData[],
     channels: {} as Channels,
-    channelsData: [] as ChannelColumn[]
+    channelsData: [] as ChannelTableData[]
   }),
   actions: {
     async getMessages(data: MessagePaginationRequest) {

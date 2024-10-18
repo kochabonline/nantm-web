@@ -11,8 +11,9 @@ function getTableAbove(selector: string): number {
 /**
  * 计算表格的高度
  * @returns 表格的高度
+ * @param calTablePaginationHeight 是否计算分页的高度, 当table总数小与每页显示的数量时, 不计算分页的高度
  */
-function calculateTableHeight(): number {
+function calculateTableHeight(calTablePaginationHeight: boolean): number {
   const windowHeight = window.innerHeight
   // 表以上的高度
   const tableAboveHeight = getTableAbove('.table')
@@ -22,10 +23,14 @@ function calculateTableHeight(): number {
   const tablePaginationHeight = 64
   // padding
   const padding = 24
+
   // 计算表格的高度
-  const tableHeight =
-    windowHeight - tableAboveHeight - tableHeaderHeight - tablePaginationHeight - padding
-  return tableHeight
+  // 不计算分页的高度
+  if (!calTablePaginationHeight) {
+    return windowHeight - tableAboveHeight - tableHeaderHeight - padding
+  }
+  // 计算分页的高度
+  return windowHeight - tableAboveHeight - tableHeaderHeight - tablePaginationHeight - padding
 }
 
 export { calculateTableHeight }

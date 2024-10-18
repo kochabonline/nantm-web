@@ -5,7 +5,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/message',
     name: 'Message',
-    component: () => import('@/layout/LayoutView.vue'),
+    component: () => import('@/layout/index.vue'),
     redirect: { name: 'Control' },
     meta: {
       title: '消息管理',
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/message/ControlView.vue'),
         meta: {
           title: '控制台',
-          icon: 'icon-kongzhitai',
+          icon: 'icon-kongzhitai'
         }
       },
       {
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/message/ChannelView.vue'),
         meta: {
           title: '通道',
-          icon: NotificationOutlined,
+          icon: NotificationOutlined
         }
       }
     ]

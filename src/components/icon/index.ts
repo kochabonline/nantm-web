@@ -1,5 +1,5 @@
 import { defineComponent, h, type Component, type PropType } from 'vue'
-import SvgIcon from '@/components/icon/SvgIconView.vue'
+import SvgIcon from '@/components/icon/svg.vue'
 
 const iconComponent = defineComponent({
   props: {

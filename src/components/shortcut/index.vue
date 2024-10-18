@@ -1,12 +1,5 @@
 <template>
-  <a-modal
-    v-model:open="open"
-    :title="props.title"
-    @ok="handleOk"
-    cancelText="取消"
-    okText="确认"
-    :centered="true"
-  >
+  <a-modal v-model:open="open" :title="props.title" @ok="handleOk" :centered="true">
     <h3>
       <p style="margin-left: 10px">{{ props.content }}</p>
     </h3>
@@ -19,27 +12,48 @@ import { onMounted, onBeforeUnmount, ref, type PropType } from 'vue'
 type ShortcutHandler = () => void
 
 const props = defineProps({
+  /**
+   * 快捷键
+   */
   shortcutKey: {
     type: String,
     required: true
   },
+  /**
+   * 是否按下 alt 键
+   */
   altKey: {
     type: Boolean
   },
+  /**
+   * 是否按下 ctrl 键
+   */
   ctrlKey: {
     type: Boolean
   },
+  /**
+   * 是否按下 shift 键
+   */
   shiftKey: {
     type: Boolean
   },
+  /**
+   * 快捷键回调
+   */
   callback: {
     type: Function as PropType<ShortcutHandler>,
     required: true
   },
+  /**
+   * 提示标题
+   */
   title: {
     type: String,
     default: '提示'
   },
+  /**
+   * 提示内容
+   */
   content: {
     type: String
   }

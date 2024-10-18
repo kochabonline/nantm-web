@@ -1,5 +1,5 @@
 <template>
-  <a-modal ref="modalRef" :wrap-style="{ overflow: 'hidden' }">
+  <a-modal :wrap-style="{ overflow: 'hidden' }">
     <template #default>
       <slot />
     </template>
@@ -19,9 +19,14 @@
 import { ref, computed, type CSSProperties, watch, watchEffect } from 'vue'
 import { useDraggable } from '@vueuse/core'
 
-const props = defineProps<{
-  title?: string
-}>()
+const props = defineProps({
+  /**
+   * 模态框标题
+   */
+  title: {
+    type: String
+  }
+})
 
 const modalTitleRef = ref<HTMLElement | null>(null)
 const { x, y, isDragging } = useDraggable(modalTitleRef)

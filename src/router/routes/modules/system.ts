@@ -1,11 +1,11 @@
-import { LaptopOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { LaptopOutlined, MenuOutlined, SafetyOutlined, UserOutlined } from '@ant-design/icons-vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/system',
     name: 'System',
-    component: () => import('@/layout/LayoutView.vue'),
+    component: () => import('@/layout/index.vue'),
     redirect: { name: 'Account' },
     meta: {
       title: '系统管理',
@@ -16,7 +16,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/system/account',
         name: 'Account',
-        component: () => import('@/views/system/AccountView.vue'),
+        component: () => import('@/views/system/account/index.vue'),
         meta: {
           title: '账户管理',
           icon: UserOutlined
@@ -25,10 +25,28 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/system/role',
         name: 'Role',
-        component: () => import('@/views/system/RoleView.vue'),
+        component: () => import('@/views/system/role/index.vue'),
         meta: {
           title: '角色管理',
           icon: 'icon-role'
+        }
+      },
+      {
+        path: '/system/rbac',
+        name: 'Rbac',
+        component: () => import('@/views/system/rbac/index.vue'),
+        meta: {
+          title: '权限管理',
+          icon: SafetyOutlined
+        }
+      },
+      {
+        path: '/system/menu',
+        name: 'Menu',
+        component: () => import('@/views/system/menu/index.vue'),
+        meta: {
+          title: '菜单管理',
+          icon: MenuOutlined
         }
       }
     ]

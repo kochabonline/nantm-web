@@ -47,7 +47,7 @@ interface Messages {
   items: Message[]
 }
 
-interface MessageColumn extends Message {
+interface MessageTableData extends Message {
   key: number
 }
 
@@ -109,7 +109,7 @@ interface Channels {
 }
 
 // Table组件项
-interface ChannelColumn extends Channel {
+interface ChannelTableData extends Channel {
   key: number
 }
 
@@ -189,10 +189,10 @@ interface ChannelPaginationRequest {
 export type {
   Message,
   Messages,
-  MessageColumn,
+  MessageTableData,
   Channel,
   Channels,
-  ChannelColumn,
+  ChannelTableData,
   CreateChannelRequest,
   DeleteChannelRequest,
   MessagePaginationRequest,

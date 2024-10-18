@@ -30,12 +30,12 @@
     </template>
   </a-dropdown>
   <!-- 快捷键: Alt + Q 退出登录 -->
-  <ShortcutView
+  <Shortcut
     :alt-key="true"
     shortcutKey="q"
     :callback="authStore.logout"
     content="是否确认退出?"
-  ></ShortcutView>
+  ></Shortcut>
 </template>
 
 <script setup lang="ts">
@@ -45,7 +45,7 @@ import type { MenuProps } from 'ant-design-vue'
 import { iconComponent } from '@/utils/icon'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
-import ShortcutView from './shortcut/ShortcutView.vue'
+import Shortcut from '@/components/shortcut/index.vue'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()

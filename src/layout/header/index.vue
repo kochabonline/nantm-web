@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumb from './breadcrumb/BreadcrumbView.vue'
-import FullScreen from '@/components/FullScreen.vue'
+import Breadcrumb from './breadcrumb/index.vue'
+import FullScreen from '@/components/fullScreen/index.vue'
 import Avatar from '@/components/AvatarView.vue'
 </script>
 

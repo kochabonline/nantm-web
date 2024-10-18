@@ -13,11 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import Table from '@/components/table/TableView.vue'
+import Table from '@/components/table/index.vue'
 import { reactive, ref } from 'vue'
 import { useMessageStore } from '@/stores/message'
 import { onBeforeMount } from 'vue'
-import type { MessageColumn, MessagePaginationRequest } from '@/types/message'
+import type { MessageTableData, MessagePaginationRequest } from '@/types/message'
 
 const messageStore = useMessageStore()
 const columns = [
@@ -32,20 +32,15 @@ const params = reactive({} as MessagePaginationRequest)
 // 加载状态
 const loading = ref(false)
 // 表格数据
-const data = ref([] as MessageColumn[])
+const data = ref([] as MessageTableData[])
 // 总数
 const total = ref(0)
 const current = ref(1)
 
 const pagination = reactive({
-  hideOnSinglePage: true,
   total: total.value,
   pageSize: 10,
   current: current.value,
-  showSizeChanger: true,
-  showQuickJumper: true,
-  pageSizeOptions: ['10', '20', '50', '100'],
-  showTotal: (total: number) => `共 ${total} 条`,
   onChange: (page: number, pageSize: number) => onChange(page, pageSize),
   onShowSizeChange: (current: number, size: number) => onShowSizeChange(current, size)
 })
@@ -71,7 +66,6 @@ const fetchData = async (params: MessagePaginationRequest) => {
     total.value = messageStore.messages.total
     pagination.total = total.value
     pagination.current = params.page
-    loading.value = false
   } catch (error) {
     /* empty */
   } finally {

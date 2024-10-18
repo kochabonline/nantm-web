@@ -5,8 +5,8 @@ import { formatDate } from '@/utils/format'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    userInfo: {} as User,
-    userList: {} as Users,
+    user: {} as User,
+    users: {} as Users,
     data: [] as UserColumn[]
   }),
   getters: {},
@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', {
       try {
         const response = await GetUserInfo(id)
         if (response.code === 200) {
-          this.userInfo = response.data
+          this.user = response.data
         } else {
           throw new Error(response.reason)
         }
@@ -44,7 +44,7 @@ export const useUserStore = defineStore('user', {
       try {
         const response = await GetUserList()
         if (response.code === 200) {
-          this.userList = response.data
+          this.users = response.data
           this.getData()
         } else {
           throw new Error(response.reason)
@@ -66,7 +66,7 @@ export const useUserStore = defineStore('user', {
       }
     },
     getData() {
-      this.data = this.userList.items.map((item) => {
+      this.data = this.users.items.map((item) => {
         if (typeof item.role === 'number') {
           switch (item.role) {
             case 1:
@@ -77,18 +77,6 @@ export const useUserStore = defineStore('user', {
               break
             default:
               item.role = '未知'
-          }
-        }
-        if (typeof item.status === 'number') {
-          switch (item.status) {
-            case 1:
-              item.status = '活跃'
-              break
-            case 2:
-              item.status = '未激活'
-              break
-            default:
-              item.status = '未知'
           }
         }
 

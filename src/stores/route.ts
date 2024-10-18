@@ -8,17 +8,17 @@ import { iconComponent } from '@/utils/icon'
 export const useRouteStore = defineStore('route', {
   state: () => ({
     routes: routes,
-    menuRouter: [] as Menu[],
-    isMenuRouterSet: false
+    menus: [] as Menu[],
+    isMenusSet: false
   }),
   getters: {
-    getMenuRouter(): Menu[] {
-      return this.menuRouter
+    getMenus(): Menu[] {
+      return this.menus
     }
   },
   actions: {
-    setMenuRouter() {
-      if (this.isMenuRouterSet) return
+    setMenus() {
+      if (this.isMenusSet) return
 
       const processRoutes = (routes: RouteRecordRaw[]): Menu[] => {
         return routes
@@ -41,8 +41,8 @@ export const useRouteStore = defineStore('route', {
           })
       }
 
-      this.menuRouter = processRoutes(this.routes)
-      this.isMenuRouterSet = true
+      this.menus = processRoutes(this.routes)
+      this.isMenusSet = true
     }
   }
 })

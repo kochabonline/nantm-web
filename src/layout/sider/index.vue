@@ -1,20 +1,20 @@
 <template>
   <a-layout-sider class="layout-sider" v-model:collapsed="collapsed" theme="light" collapsible>
     <Logo />
-    <Menu :menus="routeStore.getMenuRouter" />
+    <Menu :menus="routeStore.getMenus" />
   </a-layout-sider>
 </template>
 
 <script setup lang="ts">
 import { useRouteStore } from '@/stores/route'
-import Logo from './logo/LogoView.vue'
-import Menu from './meun/MenuView.vue'
+import Logo from './logo/index.vue'
+import Menu from './meun/index.vue'
 import { onMounted, ref } from 'vue'
 
 const collapsed = ref<boolean>(false)
 const routeStore = useRouteStore()
 onMounted(() => {
-  routeStore.setMenuRouter()
+  routeStore.setMenus()
 })
 </script>
 

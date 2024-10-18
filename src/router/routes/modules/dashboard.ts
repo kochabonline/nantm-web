@@ -5,7 +5,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('@/layout/LayoutView.vue'),
+    component: () => import('@/layout/index.vue'),
     redirect: { name: 'Analysis' },
     meta: {
       title: '概览',
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/dashboard/DashboardView.vue'),
         meta: {
           title: '仪表盘',
-          icon: DashboardOutlined,
+          icon: DashboardOutlined
         }
       }
     ]
