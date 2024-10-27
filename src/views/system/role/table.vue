@@ -3,7 +3,7 @@
     <Table
       :loading="loading"
       :columns="columns"
-      :data="data"
+      :data="roleStore.roles.items"
       :action="{ onDelete: onDelete }"
       :pagination="pagination"
     />
@@ -14,7 +14,6 @@
 import Table from '@/components/table/index.vue'
 import { useRoleStore } from '@/stores/role'
 import type { PaginationRequest } from '@/types/request'
-import type { RoleTableData } from '@/types/role'
 import { message } from 'ant-design-vue'
 import { onBeforeMount, reactive, ref } from 'vue'
 
@@ -32,8 +31,6 @@ const columns = [
 const params = reactive({} as PaginationRequest)
 // 加载状态
 const loading = ref(false)
-// 表格数据
-const data = ref([] as RoleTableData[])
 // 总数
 const total = ref(0)
 const current = ref(1)
@@ -63,7 +60,6 @@ const fetchData = async (params: PaginationRequest) => {
   try {
     loading.value = true
     await roleStore.getRoles(params)
-    data.value = roleStore.data
     total.value = roleStore.roles.total
     pagination.total = total.value
     pagination.current = params.page

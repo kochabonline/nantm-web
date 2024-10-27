@@ -45,15 +45,15 @@ instance.interceptors.response.use(
 
           return instance(config)
         } catch (error) {
-          authStore.logout()
+          authStore.reset()
           router.push({ name: 'Login' })
         }
       } else if (status === 401 && refreshTokenExpired) {
         authStore.reset()
         message.error('登录已过期, 请重新登录')
         router.push({ name: 'Login' })
-      } else if (status !== 200 && data.reason) {
-        message.error(data.reason)
+      } else if (status !== 200 && data.message) {
+        message.error(data.message)
       }
 
       return Promise.reject(data)

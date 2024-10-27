@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-button type="primary" @click="showModal">新增账户</a-button>
-    <DraggableModal v-model:open="open" title="新增账户" @ok="handleOk">
+    <Modal title="新增账户" :open="open" @ok="handleOk" @cancel="handleCancel">
       <a-form ref="formRef" :model="formState" :rules="rules" v-bind="layout" name="form_in_modal">
         <a-form-item name="username" label="用户名">
           <a-input v-model:value="formState.username" placeholder="请输入" />
@@ -16,13 +16,13 @@
           <a-input v-model:value="formState.email" placeholder="请输入" />
         </a-form-item>
       </a-form>
-    </DraggableModal>
+    </Modal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import DraggableModal from '@/components/draggable/index.vue'
+import Modal from '@/components/modal/index.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { CreateUserRequest } from '@/types/user'
@@ -38,23 +38,22 @@ const formState = reactive<CreateUserRequest>({
   email: '',
   role: ''
 })
-
 const rules: Record<string, Rule[]> = {
   username: [{ required: true, message: '请输入用户名' }],
   password: [{ required: true, message: '请输入密码' }]
 }
-
-const open = ref<boolean>(false)
-
-const showModal = () => {
-  open.value = true
-}
-
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 14 }
 }
 
+const open = ref<boolean>(false)
+const showModal = () => {
+  open.value = true
+}
+const handleCancel = () => {
+  open.value = false
+}
 const handleOk = () => {
   formRef.value
     ?.validate()
@@ -66,7 +65,7 @@ const handleOk = () => {
       // 清空表单
       formRef.value?.resetFields()
       // 重新获取用户列表
-      userStore.getUserList()
+      await userStore.getUserList()
     })
     .catch(() => {})
 }

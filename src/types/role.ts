@@ -1,13 +1,9 @@
-import type { Meta } from './response'
+import type { Meta } from './common'
 
 /**
  * 角色
  */
-interface Role extends Meta {
-  /**
-   * 角色ID
-   */
-  id: number
+interface role extends Meta {
   /**
    * 角色名称
    */
@@ -21,8 +17,8 @@ interface Role extends Meta {
 /**
  * table列
  */
-interface RoleTableData extends Role {
-  key: number
+interface Role extends role {
+  key: string
 }
 
 /**
@@ -39,4 +35,9 @@ interface Roles {
   items: Role[]
 }
 
-export type { Role, RoleTableData, Roles }
+interface CreateRoleRequest {
+  name: string
+  description: string
+}
+
+export type { Role, Roles, CreateRoleRequest }

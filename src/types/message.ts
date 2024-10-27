@@ -1,7 +1,9 @@
+import type { Meta } from './common'
+
 /**
  * 消息模型
  */
-interface Message {
+interface message extends Meta {
   /**
    * 用户ID
    */
@@ -27,13 +29,13 @@ interface Message {
    */
   status: string
   /**
-   * 创建时间
-   */
-  created_at: string
-  /**
    * 附加信息
    */
   payload: string
+}
+
+interface Message extends message {
+  key: string
 }
 
 interface Messages {
@@ -47,14 +49,10 @@ interface Messages {
   items: Message[]
 }
 
-interface MessageTableData extends Message {
-  key: number
-}
-
 /**
  * 通道模型
  */
-interface Channel {
+interface channel extends Meta {
   /**
    * 通道名称
    */
@@ -83,18 +81,10 @@ interface Channel {
    * 通道描述
    */
   description: string
-  /**
-   * 创建时间
-   */
-  created_at: string
-  /**
-   * 更新时间
-   */
-  updated_at: string
-  /**
-   * 删除时间
-   */
-  deleted_at: string
+}
+
+interface Channel extends channel {
+  key: string
 }
 
 interface Channels {
@@ -106,11 +96,6 @@ interface Channels {
    * 通道列表
    */
   items: Channel[]
-}
-
-// Table组件项
-interface ChannelTableData extends Channel {
-  key: number
 }
 
 interface CreateChannelRequest {
@@ -189,10 +174,8 @@ interface ChannelPaginationRequest {
 export type {
   Message,
   Messages,
-  MessageTableData,
   Channel,
   Channels,
-  ChannelTableData,
   CreateChannelRequest,
   DeleteChannelRequest,
   MessagePaginationRequest,

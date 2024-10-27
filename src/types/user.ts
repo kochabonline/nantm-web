@@ -1,3 +1,5 @@
+import type { Meta } from './common'
+
 /**
  * 创建用户请求
  */
@@ -17,9 +19,7 @@ interface CreateUserRequest {
 /**
  * 用户模型
  */
-interface User {
-  // 用户ID
-  id: number
+interface user extends Meta {
   // 用户名
   username: string
   // 昵称
@@ -32,12 +32,10 @@ interface User {
   status: string
   // 头像
   avatar: string
-  // 创建时间
-  created_at: string
-  // 更新时间
-  updated_at: string
-  // 删除时间
-  deleted_at: string
+}
+
+interface User extends user {
+  key: string
 }
 
 /**
@@ -50,11 +48,4 @@ interface Users {
   items: User[]
 }
 
-/**
- * table组件用户数据
- */
-interface UserColumn extends User {
-  key: number
-}
-
-export type { CreateUserRequest, User, Users, UserColumn }
+export type { CreateUserRequest, User, Users }

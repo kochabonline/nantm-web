@@ -2,20 +2,14 @@
   <a-layout-header style="background: #fff; padding: 0">
     <div class="layout-header">
       <Breadcrumb />
-      <div class="layout-header-right">
-        <a-space :size="10">
-          <FullScreen />
-          <Avatar />
-        </a-space>
-      </div>
+      <Toolbar />
     </div>
   </a-layout-header>
 </template>
 
 <script setup lang="ts">
 import Breadcrumb from './breadcrumb/index.vue'
-import FullScreen from '@/components/fullScreen/index.vue'
-import Avatar from '@/components/AvatarView.vue'
+import Toolbar from './toolbar/index.vue'
 </script>
 
 <style scoped lang="less">

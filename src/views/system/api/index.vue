@@ -1,5 +1,5 @@
 <template>
-  <div class="rbac">
+  <div class="api">
     <Form />
     <Table />
   </div>
@@ -11,7 +11,7 @@ import Table from './table.vue'
 </script>
 
 <style scoped lang="less">
-.rbac {
+.api {
   display: flex;
   flex-direction: column;
   gap: 20px;

@@ -1,11 +1,13 @@
 <template>
   <div class="role">
-    <RoleView />
+    <Form />
+    <Table />
   </div>
 </template>
 
 <script setup lang="ts">
-import RoleView from './role.vue'
+import Form from './form.vue'
+import Table from './table.vue'
 </script>
 
 <style scoped lang="less">

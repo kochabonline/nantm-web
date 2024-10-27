@@ -212,6 +212,16 @@ interface Action {
 }
 
 /**
+ * 滚动
+ */
+interface Scroll {
+  /**
+   * 样式类名
+   */
+  class: string
+}
+
+/**
  * 分页
  */
 interface Pagination {
@@ -261,4 +271,4 @@ interface Pagination {
   onShowSizeChange: (current: number, size: number) => void
 }
 
-export type { Clipboard, Ellipsis, Switch, Action, Pagination }
+export type { Clipboard, Ellipsis, Switch, Action, Scroll, Pagination }

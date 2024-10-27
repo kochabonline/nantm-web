@@ -1,14 +1,13 @@
 import type { PaginationRequest } from '@/types/request'
 import { defineStore } from 'pinia'
-import { DeleteRole, GetRoles } from '@/api/modules/role'
-import type { Role, RoleTableData, Roles } from '@/types/role'
+import { AddRole, DeleteRole, GetRoles } from '@/api/modules/role'
+import type { CreateRoleRequest, Role, Roles } from '@/types/role'
 import { formatDate } from '@/utils/format'
 
 export const useRoleStore = defineStore('role', {
   state: () => ({
     role: {} as Role,
-    roles: {} as Roles,
-    data: [] as RoleTableData[]
+    roles: {total: 0, items: [] } as Roles
   }),
   getters: {},
   actions: {
@@ -19,7 +18,19 @@ export const useRoleStore = defineStore('role', {
           this.roles = response.data
           this.getData()
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
+        }
+      } catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    async addRole(req: CreateRoleRequest) {
+      try {
+        const response = await AddRole(req)
+        if (response.code === 200) {
+          return Promise.resolve()
+        } else {
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -31,17 +42,17 @@ export const useRoleStore = defineStore('role', {
         if (response.code === 200) {
           return Promise.resolve()
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
       }
     },
     getData() {
-      this.data = this.roles.items.map((item) => {
+      this.roles.items = this.roles.items.map((item, index) => {
         return {
           ...item,
-          key: item.id,
+          key: index.toString(),
           created_at: formatDate(item.created_at)
         }
       })

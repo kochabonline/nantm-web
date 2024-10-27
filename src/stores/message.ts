@@ -1,8 +1,6 @@
 import { GetMessages, GetChannels, AddChannel, DeleteChannel } from '@/api/modules/message'
 import type {
   Channels,
-  ChannelTableData,
-  MessageTableData,
   Messages,
   CreateChannelRequest,
   DeleteChannelRequest,
@@ -13,10 +11,8 @@ import { formatDate } from '@/utils/format'
 
 export const useMessageStore = defineStore('message', {
   state: () => ({
-    messages: {} as Messages,
-    messagesData: [] as MessageTableData[],
-    channels: {} as Channels,
-    channelsData: [] as ChannelTableData[]
+    messages: { total: 0, items: [] } as Messages,
+    channels: { total: 0, items: [] } as Channels
   }),
   actions: {
     async getMessages(data: MessagePaginationRequest) {
@@ -24,9 +20,9 @@ export const useMessageStore = defineStore('message', {
         const response = await GetMessages(data)
         if (response.code === 200) {
           this.messages = response.data
-          this.getMessagesData()
+          this.formatMessagesData()
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -37,9 +33,9 @@ export const useMessageStore = defineStore('message', {
         const response = await GetChannels()
         if (response.code === 200) {
           this.channels = response.data
-          this.getChannelsData()
+          this.formatChannelsData()
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -51,7 +47,7 @@ export const useMessageStore = defineStore('message', {
         if (response.code === 200) {
           return 'ok'
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -63,33 +59,38 @@ export const useMessageStore = defineStore('message', {
         if (response.code === 200) {
           return 'ok'
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
       }
     },
-    getMessagesData() {
-      if (this.messages && Array.isArray(this.messages.items)) {
-        this.messagesData = this.messages.items.map((item, index) => {
-          return {
-            ...item,
-            key: index,
-            created_at: formatDate(item.created_at)
-          }
-        })
-      }
+    formatMessagesData() {
+      this.messages.items = this.messages.items.map((item, index) => {
+        return {
+          ...item,
+          key: index.toString(),
+          created_at: formatDate(item.created_at)
+        }
+      })
     },
-    getChannelsData() {
-      if (this.channels && Array.isArray(this.channels.items)) {
-        this.channelsData = this.channels.items.map((item, index) => {
-          return {
-            ...item,
-            key: index,
-            created_at: formatDate(item.created_at)
-          }
-        })
-      }
+    formatChannelsData() {
+      this.channels.items = this.channels.items.map((item, index) => {
+        switch (item.limiter) {
+          case 'token_bucket':
+            item.limiter = '令牌桶'
+            break
+          case 'sliding_window':
+            item.limiter = '滑动窗口'
+            break
+        }
+
+        return {
+          ...item,
+          key: index.toString(),
+          created_at: formatDate(item.created_at)
+        }
+      })
     }
   }
 })

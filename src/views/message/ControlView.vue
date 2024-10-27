@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Table :loading="loading" :columns="columns" :data="data" :pagination="pagination">
+    <Table
+      :loading="loading"
+      :columns="columns"
+      :data="messageStore.messages.items"
+      :pagination="pagination"
+    >
       <template #addBodyCell="{ column, text }">
         <template v-if="column.key === 'status'">
           <a-tag v-if="text === 'pending'" color="orange">{{ text }}</a-tag>
@@ -17,13 +22,23 @@ import Table from '@/components/table/index.vue'
 import { reactive, ref } from 'vue'
 import { useMessageStore } from '@/stores/message'
 import { onBeforeMount } from 'vue'
-import type { MessageTableData, MessagePaginationRequest } from '@/types/message'
+import type { Message, MessagePaginationRequest } from '@/types/message'
 
 const messageStore = useMessageStore()
 const columns = [
   { title: '标题', dataIndex: 'title', key: 'title', ellipsis: true },
   { title: '内容', dataIndex: 'content', key: 'content', ellipsis: true },
-  { title: '状态', dataIndex: 'status', key: 'status' },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    key: 'status',
+    filters: [
+      { text: '成功', value: 'success' },
+      { text: '失败 ', value: 'failed' }
+    ],
+    filterMultiple: false,
+    onFilter: (value: string, record: Message) => record.status.indexOf(value) === 0
+  },
   { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
   { title: '附加信息', key: 'payload', dataIndex: 'payload', ellipsis: true }
 ]
@@ -31,8 +46,6 @@ const columns = [
 const params = reactive({} as MessagePaginationRequest)
 // 加载状态
 const loading = ref(false)
-// 表格数据
-const data = ref([] as MessageTableData[])
 // 总数
 const total = ref(0)
 const current = ref(1)
@@ -62,7 +75,6 @@ const fetchData = async (params: MessagePaginationRequest) => {
   try {
     loading.value = true
     await messageStore.getMessages(params)
-    data.value = messageStore.messagesData
     total.value = messageStore.messages.total
     pagination.total = total.value
     pagination.current = params.page

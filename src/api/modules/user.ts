@@ -7,6 +7,6 @@ const GetUserInfo = (id: number) => request.get<Response<User>>(`/api/v1/user/${
 const GetUserList = () => request.get<Response<Users>>('/api/v1/user')
 const AddUser = (data: CreateUserRequest) => request.post<Response>('/api/v1/user/register', data)
 const UpdateUser = (id: number, data: User) => request.put<Response>(`/api/v1/user/${id}`, data)
-const DeleteUser = (id: number) => request.delete<Response<User>>(`/api/v1/user/${id}`)
+const DeleteUser = (id: number) => request.delete<Response>(`/api/v1/user/${id}`)
 
 export { GetUserInfo, GetUserList, AddUser, UpdateUser, DeleteUser }

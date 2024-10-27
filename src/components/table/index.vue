@@ -1,11 +1,12 @@
 <template>
-  <div :class="props.scrollClass">
+  <div :class="scroll.class">
     <a-table
       :loading="props.loading"
       :columns="props.columns"
       :data-source="props.data"
       :pagination="pagination"
       :scroll="localScroll"
+      :size="props.size"
     >
       <template #bodyCell="{ text, record, index, column }">
         <slot name="addBodyCell" :column="column" :record="record" :text="text" :index="index" />
@@ -91,15 +92,15 @@ import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vu
 import { message } from 'ant-design-vue'
 import { useClipboard } from '@vueuse/core'
 import { calculateTableHeight } from '@/utils/table'
-import type { Clipboard, Ellipsis, Switch, Action, Pagination } from './type'
+import type { Clipboard, Ellipsis, Switch, Action, Pagination, Scroll } from './type'
 
 const props = defineProps({
   /**
-   * 滚动样式
+   * 滚动
    */
-  scrollClass: {
-    type: String,
-    default: 'table'
+  scroll: {
+    type: Object as PropType<Partial<Scroll>>,
+    default: () => ({})
   },
   /**
    * 加载状态
@@ -121,6 +122,13 @@ const props = defineProps({
   data: {
     type: Array,
     required: true
+  },
+  /**
+   * 大小
+   */
+  size: {
+    type: String,
+    default: 'large'
   },
   /**
    * 剪切板
@@ -278,7 +286,15 @@ const defaultPagination = reactive({
 const pagination = computed(() => ({ ...defaultPagination, ...props.pagination }))
 
 /**
- * 滚动
+ * 表格滚动样式
+ */
+const defaultScroll = reactive({
+  class: 'table'
+})
+// 子组件传递的 scroll 与 defaultScroll 合并
+const scroll = computed(() => ({ ...defaultScroll, ...props.scroll }))
+
+/**
  * 表格滚动配置, y轴高度自适应, 必须在挂载后计算表格高度
  */
 const localScroll = ref({ x: 'max-content', y: 0 })

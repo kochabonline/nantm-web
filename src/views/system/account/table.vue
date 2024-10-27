@@ -2,7 +2,7 @@
   <div>
     <Table
       :columns="columns"
-      :data="userStore.data"
+      :data="userStore.users.items"
       :switch="{
         key: 'status',
         onClick: onSwitch,

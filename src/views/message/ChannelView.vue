@@ -156,7 +156,7 @@
     <div>
       <Table
         :columns="columns"
-        :data="messageStore.channelsData"
+        :data="messageStore.channels.items"
         :clipboard="{ keys: ['token'] }"
         :action="{ onDelete: Delete }"
       ></Table>

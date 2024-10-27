@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia'
-import type { CreateUserRequest, User, Users, UserColumn } from '@/types/user'
+import type { CreateUserRequest, User, Users } from '@/types/user'
 import { AddUser, DeleteUser, GetUserInfo, GetUserList } from '@/api/modules/user'
 import { formatDate } from '@/utils/format'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: {} as User,
-    users: {} as Users,
-    data: [] as UserColumn[]
+    users: { total: 0, items: [] } as Users
   }),
   getters: {},
   actions: {
@@ -22,7 +21,7 @@ export const useUserStore = defineStore('user', {
         if (response.code === 200) {
           return 'ok'
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -34,7 +33,7 @@ export const useUserStore = defineStore('user', {
         if (response.code === 200) {
           this.user = response.data
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -47,7 +46,7 @@ export const useUserStore = defineStore('user', {
           this.users = response.data
           this.getData()
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -59,14 +58,14 @@ export const useUserStore = defineStore('user', {
         if (response.code === 200) {
           return 'ok'
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
       }
     },
     getData() {
-      this.data = this.users.items.map((item) => {
+      this.users.items = this.users.items.map((item, index) => {
         if (typeof item.role === 'number') {
           switch (item.role) {
             case 1:
@@ -82,7 +81,7 @@ export const useUserStore = defineStore('user', {
 
         return {
           ...item,
-          key: item.id,
+          key: index.toString(),
           created_at: formatDate(item.created_at)
         }
       })

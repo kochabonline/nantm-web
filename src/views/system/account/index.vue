@@ -1,13 +1,13 @@
 <template>
   <div class="account">
-    <AccountForm></AccountForm>
-    <Account></Account>
+    <Form />
+    <Table />
   </div>
 </template>
 
 <script setup lang="ts">
-import Account from './account.vue'
-import AccountForm from './accountForm.vue'
+import Table from './table.vue'
+import Form from './form.vue'
 </script>
 
 <style scoped lang="less">

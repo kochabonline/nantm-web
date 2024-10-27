@@ -61,7 +61,7 @@ export const useAuthStore = defineStore('auth', {
           }
           router.push(redirect)
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -84,7 +84,7 @@ export const useAuthStore = defineStore('auth', {
           const currentRoute = router.currentRoute.value.fullPath
           router.push({ name: 'Login', query: { redirect: currentRoute } })
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)
@@ -102,7 +102,7 @@ export const useAuthStore = defineStore('auth', {
         if (response.code === 200) {
           this.accessToken = response.data
         } else {
-          throw new Error(response.reason)
+          throw new Error(response.message)
         }
       } catch (error) {
         return Promise.reject(error)

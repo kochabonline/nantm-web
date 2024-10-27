@@ -7,41 +7,39 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, type PropType } from 'vue'
-
-type ShortcutHandler = () => void
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 
 const props = defineProps({
   /**
    * 快捷键
    */
-  shortcutKey: {
-    type: String,
+  keys: {
+    type: Array<string>,
     required: true
   },
   /**
    * 是否按下 alt 键
    */
-  altKey: {
+  alt: {
     type: Boolean
   },
   /**
    * 是否按下 ctrl 键
    */
-  ctrlKey: {
+  ctrl: {
     type: Boolean
   },
   /**
    * 是否按下 shift 键
    */
-  shiftKey: {
+  shift: {
     type: Boolean
   },
   /**
    * 快捷键回调
    */
   callback: {
-    type: Function as PropType<ShortcutHandler>,
+    type: Function,
     required: true
   },
   /**
@@ -59,19 +57,26 @@ const props = defineProps({
   }
 })
 const open = ref<boolean>(false)
+const pressedKeys = new Set<string>()
 
 const handleKeydown = (event: KeyboardEvent) => {
-  const { altKey, ctrlKey, shiftKey, shortcutKey } = props
+  pressedKeys.add(event.key)
+
+  const { alt, ctrl, shift, keys } = props
 
   if (
-    (altKey === undefined || event.altKey === altKey) &&
-    (ctrlKey === undefined || event.ctrlKey === ctrlKey) &&
-    (shiftKey === undefined || event.shiftKey === shiftKey) &&
-    event.key === shortcutKey
+    (alt === undefined || event.altKey === alt) &&
+    (ctrl === undefined || event.ctrlKey === ctrl) &&
+    (shift === undefined || event.shiftKey === shift) &&
+    keys.every((key) => pressedKeys.has(key))
   ) {
     event.preventDefault()
     open.value = true
   }
+}
+
+const handleKeyup = (event: KeyboardEvent) => {
+  pressedKeys.delete(event.key)
 }
 
 const handleOk = () => {
@@ -81,10 +86,12 @@ const handleOk = () => {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
+  document.addEventListener('keyup', handleKeyup)
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeydown)
+  document.removeEventListener('keyup', handleKeyup)
 })
 </script>
 

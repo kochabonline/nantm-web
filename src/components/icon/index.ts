@@ -1,5 +1,5 @@
 import { defineComponent, h, type Component, type PropType } from 'vue'
-import SvgIcon from '@/components/icon/svg.vue'
+import Svg from '@/components/icon/svg.vue'
 
 const iconComponent = defineComponent({
   props: {
@@ -12,7 +12,7 @@ const iconComponent = defineComponent({
     const { icon } = props
     const iconComponent = () => {
       if (typeof icon === 'string') {
-        return h(SvgIcon, { icon: icon })
+        return h(Svg, { icon: icon })
       }
       if (typeof icon === 'function') {
         return h(icon)

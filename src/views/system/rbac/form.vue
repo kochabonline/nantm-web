@@ -57,14 +57,10 @@ import { reactive, ref } from 'vue'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import type { FormInstance } from 'ant-design-vue'
 import Draggable from '@/components/draggable/index.vue'
+import type { Policy } from '@/types/rbac'
+import { useRbacStore } from '@/stores/rbac'
 
-interface Policy {
-  role: string
-  path: string
-  method: string
-  id: number
-}
-
+const rbacStore = useRbacStore()
 const open = ref(false)
 const showModal = () => {
   open.value = true
@@ -78,7 +74,8 @@ const add = () => {
     role: '',
     path: '',
     method: '',
-    id: Date.now()
+    id: Date.now(),
+    key: ''
   })
 }
 const remove = (item: Policy) => {
@@ -91,11 +88,14 @@ const handleOk = () => {
   formRef.value
     ?.validate()
     .then(() => {
-      console.log('dynamicValidateForm:', dynamicValidateForm)
       // 提交表单
+      rbacStore.addPolicies(dynamicValidateForm.policies)
     })
     .catch(() => {
       /** empty */
+    })
+    .finally(() => {
+      open.value = false
     })
 }
 </script>

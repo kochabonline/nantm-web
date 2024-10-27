@@ -1,0 +1,106 @@
+<template>
+  <div>
+    <Table
+      :loading="loading"
+      :columns="columns"
+      :data="apiStore.apis.items"
+      :pagination="pagination"
+      :action="{ onEdit, onDelete }"
+      size="small"
+    />
+    <Drawer title="API" :open="open" :onClose="onClose" :onSubmit="onSubmit" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import Table from '@/components/table/index.vue'
+import Drawer from '@/components/drawer/index.vue'
+import { useApiStore } from '@/stores/api'
+import type { PaginationRequest } from '@/types/request'
+import { message } from 'ant-design-vue'
+import { onBeforeMount, reactive, ref } from 'vue'
+
+const apiStore = useApiStore()
+const columns = [
+  { title: '组', dataIndex: 'group', key: 'group' },
+  { title: '名称', dataIndex: 'name', key: 'name' },
+  { title: '路径', dataIndex: 'path', key: 'path' },
+  { title: '请求方法', dataIndex: 'method', key: 'method' },
+  { title: '描述', dataIndex: 'description', key: 'description' },
+  { title: '操作', dataIndex: 'action', key: 'action' }
+]
+
+// 查询参数
+const params = reactive({} as PaginationRequest)
+// 是否显示抽屉
+const open = ref(false)
+// 加载状态
+const loading = ref(false)
+// 总数
+const total = ref(0)
+const current = ref(1)
+
+const pagination = reactive({
+  total: total.value,
+  pageSize: 10,
+  current: current.value,
+  onChange: (page: number, pageSize: number) => onChange(page, pageSize),
+  onShowSizeChange: (current: number, size: number) => onShowSizeChange(current, size)
+})
+// 页码改变
+const onChange = async (page: number, pageSize: number) => {
+  params.page = page
+  params.size = pageSize
+  await fetchData(params)
+}
+// 分页改变
+const onShowSizeChange = async (current: number, size: number) => {
+  params.page = current
+  params.size = size
+  pagination.pageSize = size
+  await fetchData(params)
+}
+
+const fetchData = async (params: PaginationRequest) => {
+  try {
+    loading.value = true
+    await apiStore.getApis(params)
+    total.value = apiStore.apis.total
+    pagination.total = total.value
+    pagination.current = params.page
+  } catch (error) {
+    /** empty */
+  } finally {
+    loading.value = false
+  }
+}
+
+const onClose = () => {
+  open.value = false
+}
+
+const onSubmit = () => {
+  open.value = false
+}
+
+const onEdit = (record: any) => {
+  console.log(record)
+}
+
+const onDelete = async (record: any) => {
+  try {
+    const { id } = record
+    await apiStore.deleteApi(id)
+    await fetchData(params)
+  } catch (error) {
+    message.error('删除失败')
+  }
+}
+
+// 组件挂载到DOM之前加载数据
+onBeforeMount(async () => {
+  await fetchData(params)
+})
+</script>
+
+<style scoped lang="less"></style>

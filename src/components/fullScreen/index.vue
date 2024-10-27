@@ -1,5 +1,5 @@
 <template>
-  <a-button :type="props.type" :icon="props.icon" @click="props.onClick"></a-button>
+  <a-button :type="props.type" :icon="props.icon" :size="props.size" @click="onClick"></a-button>
 </template>
 
 <script setup lang="ts">
@@ -22,23 +22,22 @@ const props = defineProps({
     default: () => h(FullscreenOutlined)
   },
   /**
-   * 全屏按钮点击事件
+   * 按钮大小
    */
-  onClick: {
-    type: Function as PropType<() => void>,
-    default: () => {
-      const handleFullScreen = () => {
-        const element = document.documentElement
-        if (document.fullscreenElement) {
-          document.exitFullscreen()
-        } else {
-          element.requestFullscreen()
-        }
-      }
-      return handleFullScreen
-    }
+  size: {
+    type: String as PropType<'large' | 'middle' | 'small'>,
+    default: 'middle'
   }
 })
+
+const onClick = () => {
+  const element = document.documentElement
+  if (document.fullscreenElement) {
+    document.exitFullscreen()
+  } else {
+    element.requestFullscreen()
+  }
+}
 </script>
 
 <style scoped lang="less"></style>

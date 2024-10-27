@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown :trigger="['click']">
+  <a-dropdown :trigger="['click', 'hover']">
     <a-avatar
       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIGWg2HXqvp2BYhqD9JSoWRUc9pdKpKGbQ3w&s"
     />
@@ -13,9 +13,9 @@
             />
             <div style="display: flex; flex-direction: column; margin-left: 10px">
               <div>
-                <h4>{{ userStore.userInfo.username }}</h4>
+                <h4>{{ userStore.user.username }}</h4>
               </div>
-              <div style="font-size: 0.8em; color: #999">{{ userStore.userInfo.email }}</div>
+              <div style="font-size: 0.8em; color: #999">{{ userStore.user.email }}</div>
             </div>
           </div>
         </div>
@@ -31,8 +31,8 @@
   </a-dropdown>
   <!-- 快捷键: Alt + Q 退出登录 -->
   <Shortcut
-    :alt-key="true"
-    shortcutKey="q"
+    :keys="['q']"
+    :alt="true"
     :callback="authStore.logout"
     content="是否确认退出?"
   ></Shortcut>

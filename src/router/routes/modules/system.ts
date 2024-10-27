@@ -1,4 +1,10 @@
-import { LaptopOutlined, MenuOutlined, SafetyOutlined, UserOutlined } from '@ant-design/icons-vue'
+import {
+  ApiOutlined,
+  LaptopOutlined,
+  MenuOutlined,
+  SafetyOutlined,
+  UserOutlined
+} from '@ant-design/icons-vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -47,6 +53,15 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '菜单管理',
           icon: MenuOutlined
+        }
+      },
+      {
+        path: '/system/api',
+        name: 'Api',
+        component: () => import('@/views/system/api/index.vue'),
+        meta: {
+          title: '接口管理',
+          icon: ApiOutlined
         }
       }
     ]
