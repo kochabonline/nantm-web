@@ -1,7 +1,14 @@
 <template>
   <div>
-    <a-button type="primary" @click="showModal">新增接口</a-button>
-    <Modal title="新增接口" :open="open" @ok="handleOk" @cancel="handleCancel">
+    <a-button v-if="!props.isUpdate && !props.record" type="primary" @click="showModal"
+      >新增接口</a-button
+    >
+    <Modal
+      :title="props.isUpdate ? '编辑接口' : '新增接口'"
+      :open="open"
+      @ok="handleOk"
+      @cancel="handleCancel"
+    >
       <a-form ref="formRef" :model="formState" :rules="rules" v-bind="layout" name="form_in_modal">
         <a-form-item name="name" label="名称">
           <a-input v-model:value="formState.name" placeholder="请输入" />
@@ -30,12 +37,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import Modal from '@/components/modal/index.vue'
 import { useApiStore } from '@/stores/api'
 import type { CreateApiRequest } from '@/types/api'
 import type { PaginationRequest } from '@/types/request'
+
+const props = defineProps({
+  isUpdate: Boolean,
+  record: Object
+})
+const emit = defineEmits(['updateComplete'])
 
 const apiStore = useApiStore()
 
@@ -69,27 +82,44 @@ const showModal = () => {
 }
 const handleCancel = () => {
   open.value = false
+  emit('updateComplete')
 }
 const handleOk = () => {
   formRef.value
     ?.validate()
     .then(async () => {
-      // 提交表单
-      await apiStore.addApi(formState)
-      // 关闭模态框
-      open.value = false
-      // 清空表单
-      formRef.value?.resetFields()
-      // 刷新列表
-      const req: PaginationRequest = {
-        page: 0,
-        size: 0,
-        keyword: ''
+      if (props.isUpdate) {
+        console.log('update')
+      } else {
+        // 提交表单
+        await apiStore.addApi(formState)
+        // 关闭模态框
+        open.value = false
+        // 清空表单
+        formRef.value?.resetFields()
+        // 刷新列表
+        const req: PaginationRequest = {
+          page: 0,
+          size: 0,
+          keyword: ''
+        }
+        await apiStore.getApis(req)
       }
-      await apiStore.getApis(req)
     })
     .catch(() => {})
 }
+
+/** 如果是编辑模式, 初始化表单 */
+watch(
+  () => props.record,
+  (record) => {
+    if (props.isUpdate && record) {
+      Object.assign(formState, record)
+      open.value = true
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped lang="less"></style>

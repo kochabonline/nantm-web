@@ -8,17 +8,17 @@
       :action="{ onEdit, onDelete }"
       size="small"
     />
-    <Drawer title="API" :open="open" :onClose="onClose" :onSubmit="onSubmit" />
+    <Form :isUpdate="isUpdate" :record="updateRecord" @updateComplete="updateComplete" />
   </div>
 </template>
 
 <script setup lang="ts">
 import Table from '@/components/table/index.vue'
-import Drawer from '@/components/drawer/index.vue'
 import { useApiStore } from '@/stores/api'
 import type { PaginationRequest } from '@/types/request'
 import { message } from 'ant-design-vue'
 import { onBeforeMount, reactive, ref } from 'vue'
+import Form from './form.vue'
 
 const apiStore = useApiStore()
 const columns = [
@@ -32,8 +32,6 @@ const columns = [
 
 // 查询参数
 const params = reactive({} as PaginationRequest)
-// 是否显示抽屉
-const open = ref(false)
 // 加载状态
 const loading = ref(false)
 // 总数
@@ -75,16 +73,16 @@ const fetchData = async (params: PaginationRequest) => {
   }
 }
 
-const onClose = () => {
-  open.value = false
-}
-
-const onSubmit = () => {
-  open.value = false
-}
-
+/** 编辑 */
+const updateRecord = ref({})
+const isUpdate = ref(false)
 const onEdit = (record: any) => {
-  console.log(record)
+  updateRecord.value = record
+  isUpdate.value = true
+}
+const updateComplete = () => {
+  isUpdate.value = false
+  updateRecord.value = {}
 }
 
 const onDelete = async (record: any) => {
