@@ -33,7 +33,8 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: (state) => computed(() => !!state.accessToken).value,
     isFetchUserInfo: (state) => computed(() => state.fetchUserInfo).value,
     userId: (state) => computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userId).value,
-    username: (state) => computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).username).value,
+    username: (state) =>
+      computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).username).value,
     userRole: (state) =>
       computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userRole).value,
     accessTokenExp: (state) =>
@@ -116,7 +117,7 @@ export const useAuthStore = defineStore('auth', {
       const userStore = useUserStore()
       if (this.fetchUserInfo) return
       try {
-        await userStore.getUserInfo(this.userId)
+        await userStore.getUser(this.userId)
         this.fetchUserInfo = true
       } catch (error) {
         return Promise.reject(error)

@@ -1,12 +1,13 @@
 import { request } from '../request'
 
 import type { Response } from '@/types/response'
-import type { CreateUserRequest, User, Users } from '@/types/user'
+import type { UserRequest, User, Users } from '@/types/user'
 
-const GetUserInfo = (id: number) => request.get<Response<User>>(`/api/v1/user/${id}`)
-const GetUserList = () => request.get<Response<Users>>('/api/v1/user')
-const AddUser = (data: CreateUserRequest) => request.post<Response>('/api/v1/user/register', data)
-const UpdateUser = (id: number, data: User) => request.put<Response>(`/api/v1/user/${id}`, data)
+const GetUser = (id: number) => request.get<Response<User>>(`/api/v1/user/${id}`)
+const GetUsers = () => request.get<Response<Users>>('/api/v1/user')
+const AddUser = (data: UserRequest) => request.post<Response>('/api/v1/user/register', data)
+const UpdateUser = (id: number, data: UserRequest) =>
+  request.put<Response>(`/api/v1/user/${id}`, data)
 const DeleteUser = (id: number) => request.delete<Response>(`/api/v1/user/${id}`)
 
-export { GetUserInfo, GetUserList, AddUser, UpdateUser, DeleteUser }
+export { GetUser, GetUsers, AddUser, UpdateUser, DeleteUser }

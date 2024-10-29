@@ -3,7 +3,7 @@ import type { Meta } from './common'
 /**
  * 创建用户请求
  */
-interface CreateUserRequest {
+interface UserRequest {
   // 用户名
   username: string
   // 密码
@@ -48,4 +48,4 @@ interface Users {
   items: User[]
 }
 
-export type { CreateUserRequest, User, Users }
+export type { UserRequest, User, Users }

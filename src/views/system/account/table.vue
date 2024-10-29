@@ -10,15 +10,17 @@
         unCheckedValue: 2,
         onDisabled: onDisabled
       }"
-      :action="{ onDelete: Delete }"
+      :action="{ onEdit: onEdit, onDelete: onDelete }"
     />
+    <Form :isUpdate="isUpdate" :record="updateRecord" @reset="reset" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import Table from '@/components/table/index.vue'
+import Form from './form.vue'
 
 const userStore = useUserStore()
 const columns = [
@@ -41,15 +43,27 @@ const onDisabled = (record: any) => {
   return record.role === 'super_admin'
 }
 
-const Delete = async (record: any) => {
+// 编辑
+const isUpdate = ref(false)
+const updateRecord = ref({})
+const onEdit = (record: any) => {
+  isUpdate.value = true
+  updateRecord.value = record
+}
+const reset = () => {
+  isUpdate.value = false
+  updateRecord.value = {}
+}
+
+const onDelete = async (record: any) => {
   const { id } = record
   await userStore.deleteUser(id)
   // 删除后重新获取用户列表
-  await userStore.getUserList()
+  await userStore.getUsers()
 }
 
 onBeforeMount(async () => {
-  await userStore.getUserList()
+  await userStore.getUsers()
 })
 </script>
 

@@ -20,6 +20,6 @@ interface Apis {
   items: Api[]
 }
 
-interface CreateApiRequest extends api {}
+interface ApiRequest extends api {}
 
-export type { Api, Apis, CreateApiRequest }
+export type { Api, Apis, ApiRequest }

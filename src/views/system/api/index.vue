@@ -1,8 +1,10 @@
 <template>
-  <div class="api">
-    <Form />
-    <Table />
-  </div>
+  <a-card>
+    <div class="api">
+      <Form />
+      <Table />
+    </div>
+  </a-card>
 </template>
 
 <script setup lang="ts">

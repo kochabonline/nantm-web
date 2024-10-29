@@ -1,5 +1,5 @@
-import { AddApi, DeleteApi, GetApis } from '@/api/modules/api'
-import type { Api, Apis, CreateApiRequest } from '@/types/api'
+import { AddApi, DeleteApi, GetApis, UpdateApi } from '@/api/modules/api'
+import type { Api, Apis, ApiRequest } from '@/types/api'
 import type { PaginationRequest } from '@/types/request'
 import { formatDate } from '@/utils/format'
 import { defineStore } from 'pinia'
@@ -23,9 +23,19 @@ export const useApiStore = defineStore('api', {
         throw Promise.reject(error)
       }
     },
-    async addApi(req: CreateApiRequest) {
+    async addApi(req: ApiRequest) {
       try {
         const response = await AddApi(req)
+        if (response.code != 200) {
+          throw new Error(response.message)
+        }
+      } catch (error) {
+        throw Promise.reject(error)
+      }
+    },
+    async updateApi(id: number, req: ApiRequest) {
+      try {
+        const response = await UpdateApi(id, req)
         if (response.code != 200) {
           throw new Error(response.message)
         }

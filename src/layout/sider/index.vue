@@ -1,5 +1,11 @@
 <template>
-  <a-layout-sider class="layout-sider" v-model:collapsed="collapsed" theme="light" collapsible>
+  <a-layout-sider
+    class="layout-sider"
+    v-model:collapsed="localCollapsed"
+    :trigger="null"
+    theme="light"
+    collapsible
+  >
     <Logo />
     <Menu :menus="routeStore.getMenus" />
   </a-layout-sider>
@@ -9,9 +15,19 @@
 import { useRouteStore } from '@/stores/route'
 import Logo from './logo/index.vue'
 import Menu from './meun/index.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
-const collapsed = ref<boolean>(false)
+const props = defineProps({
+  collapsed: Boolean
+})
+
+const localCollapsed = ref<boolean>(false)
+watch(
+  () => props.collapsed,
+  (value) => {
+    localCollapsed.value = value
+  }
+)
 const routeStore = useRouteStore()
 onMounted(() => {
   routeStore.setMenus()

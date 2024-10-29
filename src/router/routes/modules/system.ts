@@ -1,10 +1,4 @@
-import {
-  ApiOutlined,
-  LaptopOutlined,
-  MenuOutlined,
-  SafetyOutlined,
-  UserOutlined
-} from '@ant-design/icons-vue'
+import { ApiOutlined, LaptopOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons-vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -35,15 +29,6 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '角色管理',
           icon: 'icon-role'
-        }
-      },
-      {
-        path: '/system/rbac',
-        name: 'Rbac',
-        component: () => import('@/views/system/rbac/index.vue'),
-        meta: {
-          title: '权限管理',
-          icon: SafetyOutlined
         }
       },
       {

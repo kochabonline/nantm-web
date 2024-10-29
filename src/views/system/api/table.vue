@@ -8,7 +8,7 @@
       :action="{ onEdit, onDelete }"
       size="small"
     />
-    <Form :isUpdate="isUpdate" :record="updateRecord" @updateComplete="updateComplete" />
+    <Form :isUpdate="isUpdate" :record="updateRecord" @reset="reset" />
   </div>
 </template>
 
@@ -80,7 +80,7 @@ const onEdit = (record: any) => {
   updateRecord.value = record
   isUpdate.value = true
 }
-const updateComplete = () => {
+const reset = () => {
   isUpdate.value = false
   updateRecord.value = {}
 }
