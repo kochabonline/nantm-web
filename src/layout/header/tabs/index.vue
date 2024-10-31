@@ -39,23 +39,17 @@ const style = ref({ top: '0px', left: '0px' })
 const items = [
   {
     key: 'close',
-    text: 'Close',
+    text: '关闭标签页',
     onClick: () => {
-      console.log('close')
+      visible.value = false
     }
   },
   {
-    key: 'close-others',
-    text: 'Close Others',
+    key: 'closeAll',
+    text: '关闭全部标签页',
     onClick: () => {
-      console.log('close-others')
-    }
-  },
-  {
-    key: 'close-all',
-    text: 'Close All',
-    onClick: () => {
-      console.log('close-all')
+      tabsStore.closeAllTabs()
+      visible.value = false
     }
   }
 ]

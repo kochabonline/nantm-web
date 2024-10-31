@@ -11,14 +11,15 @@ interface Tab {
 const DefaultTab: Tab = {
   name: 'Analysis',
   title: '仪表盘',
-  keepalive: true,
+  keepalive: false,
   closable: false
 }
 
 export const useTabsStore = defineStore('tabs', {
   state: () => ({
     tabs: [DefaultTab] as Tab[],
-    activeTab: {} as Tab
+    activeTab: {} as Tab,
+    exclude: [] as string[]
   }),
   persist: [
     {
@@ -33,6 +34,9 @@ export const useTabsStore = defineStore('tabs', {
     },
     getActiveKey(): string {
       return this.activeTab.name
+    },
+    getExclude(): string[] {
+      return this.exclude
     }
   },
   actions: {
@@ -57,6 +61,11 @@ export const useTabsStore = defineStore('tabs', {
           this.setActiveTab(this.tabs[index] || this.tabs[index - 1])
         }
       }
+
+      // keepalive排除列表
+      if (!this.exclude.includes(name)) {
+        router.push({ name: this.activeTab.name })
+      }
     },
     setActiveTab(tab: Tab) {
       this.activeTab.name = tab.name
@@ -64,6 +73,10 @@ export const useTabsStore = defineStore('tabs', {
       if (router.currentRoute.value.name !== tab.name) {
         router.push({ name: tab.name })
       }
+    },
+    closeAllTabs() {
+      this.tabs = [DefaultTab]
+      this.setActiveTab(DefaultTab)
     }
   }
 })
