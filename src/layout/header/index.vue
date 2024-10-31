@@ -1,5 +1,5 @@
 <template>
-  <a-layout-header style="background: #fff; padding: 0">
+  <a-layout-header style="background: #fff; padding: 0; height: 49.2px">
     <div class="layout-header">
       <menu-unfold-outlined v-if="props.collapsed" class="trigger" @click="onClick" />
       <menu-fold-outlined v-else class="trigger" @click="onClick" />
@@ -9,12 +9,16 @@
       </div>
     </div>
   </a-layout-header>
+  <div style="height: 30px">
+    <Tabs />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
 import Breadcrumb from './breadcrumb/index.vue'
 import Toolbar from './toolbar/index.vue'
+import Tabs from './tabs/index.vue'
 
 const props = defineProps({
   collapsed: Boolean
@@ -51,5 +55,8 @@ const onClick = () => {
     width: 100%;
     margin-right: 24px;
   }
+}
+:deep(.ant-tabs-nav) {
+  height: 30px;
 }
 </style>

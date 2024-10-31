@@ -19,7 +19,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/account/index.vue'),
         meta: {
           title: '账户管理',
-          icon: UserOutlined
+          icon: UserOutlined,
+          keepalive: true
         }
       },
       {
@@ -28,7 +29,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/role/index.vue'),
         meta: {
           title: '角色管理',
-          icon: 'icon-role'
+          icon: 'icon-role',
+          keepalive: true
         }
       },
       {
@@ -37,7 +39,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/menu/index.vue'),
         meta: {
           title: '菜单管理',
-          icon: MenuOutlined
+          icon: MenuOutlined,
+          keepalive: true
         }
       },
       {
@@ -46,7 +49,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/api/index.vue'),
         meta: {
           title: '接口管理',
-          icon: ApiOutlined
+          icon: ApiOutlined,
+          keepalive: true
         }
       }
     ]

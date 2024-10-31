@@ -21,16 +21,17 @@ import { useUserStore } from '@/stores/user'
 import { onBeforeMount, ref } from 'vue'
 import Table from '@/components/table/index.vue'
 import Form from './form.vue'
+import type { FormInstance } from 'ant-design-vue'
 
 const userStore = useUserStore()
 const columns = [
-  { title: '用户名', dataIndex: 'username', key: 'username' },
-  { title: '昵称', dataIndex: 'nickname', key: 'nickname' },
-  { title: '邮箱', dataIndex: 'email', key: 'email' },
-  { title: '角色', dataIndex: 'role', key: 'role' },
-  { title: '创建时间', dataIndex: 'created_at', key: 'created_at' },
-  { title: '状态', dataIndex: 'status', key: 'status' },
-  { title: '操作', key: 'action' }
+  { title: '用户名', dataIndex: 'username', key: 'username', align: 'center' },
+  { title: '昵称', dataIndex: 'nickname', key: 'nickname', align: 'center' },
+  { title: '邮箱', dataIndex: 'email', key: 'email', align: 'center' },
+  { title: '角色', dataIndex: 'role', key: 'role', align: 'center' },
+  { title: '创建时间', dataIndex: 'created_at', key: 'created_at', align: 'center' },
+  { title: '状态', dataIndex: 'status', key: 'status', align: 'center' },
+  { title: '操作', key: 'action', align: 'center' }
 ]
 
 const onSwitch = (checked: any, record: any) => {

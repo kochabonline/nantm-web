@@ -1,10 +1,10 @@
 <template>
   <div>
     <a-button v-if="!props.isUpdate && !props.record" type="primary" @click="showModal"
-      >新增接口</a-button
+      >新增菜单</a-button
     >
     <Modal
-      :title="props.isUpdate ? '编辑接口' : '新增接口'"
+      :title="props.isUpdate ? '编辑菜单' : '新增菜单'"
       :open="open"
       @ok="handleOk"
       @cancel="handleCancel"
@@ -62,11 +62,7 @@ const formState = reactive<ApiRequest>({
   group: ''
 })
 const rules = {
-  name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-  path: [{ required: true, message: '请输入路径', trigger: 'blur' }],
-  method: [{ required: true, message: '请选择请求方法', trigger: 'change' }],
-  group: [{ message: '请输入组', trigger: 'blur' }],
-  description: [{ message: '请输入描述', trigger: 'blur' }]
+  parent_id: [{ required: true, message: '请选择父级菜单', trigger: 'change' }]
 }
 const layout = {
   labelCol: { span: 6 },

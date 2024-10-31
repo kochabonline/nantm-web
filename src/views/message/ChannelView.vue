@@ -2,7 +2,7 @@
   <div class="account">
     <div>
       <a-button type="primary" @click="showModal">新增通道</a-button>
-      <DraggableModal ref="modalRef" v-model:open="open" title="新增通道" @ok="handleOk">
+      <Modal :open="open" title="新增通道" @ok="handleOk" @cancel="handleCancel">
         <div>
           <a-form
             ref="formRef"
@@ -151,12 +151,12 @@
             </a-form-item>
           </a-form>
         </div>
-      </DraggableModal>
+      </Modal>
     </div>
     <div>
       <Table
         :columns="columns"
-        :data="messageStore.channels.items"
+        :data="data"
         :clipboard="{ keys: ['token'] }"
         :action="{ onDelete: Delete }"
       ></Table>
@@ -165,10 +165,10 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref, reactive } from 'vue'
-import DraggableModal from '@/components/draggable/index.vue'
+import { onBeforeMount, ref, reactive, computed } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import Modal from '@/components/modal/index.vue'
 import Table from '@/components/table/index.vue'
 import { useMessageStore } from '@/stores/message'
 
@@ -191,6 +191,7 @@ const limiter = reactive(['无限制', '令牌桶', '滑动窗口'])
 const providerValue = ref(provider[0])
 const limiterValue = ref(limiter[0])
 
+const data = computed(() => messageStore.channels.items || [])
 const columns = [
   { title: '通道名称', dataIndex: 'name', key: 'name', ellipsis: true },
   { title: '提供商', dataIndex: 'provider', key: 'provider' },
@@ -339,6 +340,9 @@ const innerlayout = {
 const open = ref<boolean>(false)
 const showModal = () => {
   open.value = true
+}
+const handleCancel = () => {
+  open.value = false
 }
 const handleOk = () => {
   const validateForms = async () => {

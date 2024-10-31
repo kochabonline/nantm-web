@@ -1,12 +1,7 @@
 <template>
   <div>
-    <Table
-      :loading="loading"
-      :columns="columns"
-      :data="messageStore.messages.items"
-      :pagination="pagination"
-    >
-      <template #addBodyCell="{ column, text }">
+    <Table :loading="loading" :columns="columns" :data="data" :pagination="pagination">
+      <template #bodyCell="{ column, text }">
         <template v-if="column.key === 'status'">
           <a-tag v-if="text === 'pending'" color="orange">{{ text }}</a-tag>
           <a-tag v-else-if="text === 'success'" color="green">{{ text }}</a-tag>
@@ -19,12 +14,13 @@
 
 <script setup lang="ts">
 import Table from '@/components/table/index.vue'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useMessageStore } from '@/stores/message'
 import { onBeforeMount } from 'vue'
 import type { Message, MessagePaginationRequest } from '@/types/message'
 
 const messageStore = useMessageStore()
+const data = computed(() => messageStore.messages.items || [])
 const columns = [
   { title: '标题', dataIndex: 'title', key: 'title', ellipsis: true },
   { title: '内容', dataIndex: 'content', key: 'content', ellipsis: true },

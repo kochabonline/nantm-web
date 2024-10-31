@@ -6,8 +6,11 @@
       :data="apiStore.apis.items"
       :pagination="pagination"
       :action="{ onEdit, onDelete }"
-      size="small"
-    />
+    >
+      <template #title>
+        <Form></Form>
+      </template>
+    </Table>
     <Form :isUpdate="isUpdate" :record="updateRecord" @reset="reset" />
   </div>
 </template>
@@ -22,12 +25,12 @@ import Form from './form.vue'
 
 const apiStore = useApiStore()
 const columns = [
-  { title: '组', dataIndex: 'group', key: 'group' },
-  { title: '名称', dataIndex: 'name', key: 'name' },
-  { title: '路径', dataIndex: 'path', key: 'path' },
-  { title: '请求方法', dataIndex: 'method', key: 'method' },
-  { title: '描述', dataIndex: 'description', key: 'description' },
-  { title: '操作', dataIndex: 'action', key: 'action' }
+  { title: '组', dataIndex: 'group', key: 'group', align: 'center' },
+  { title: '名称', dataIndex: 'name', key: 'name', align: 'center' },
+  { title: '路径', dataIndex: 'path', key: 'path', align: 'center' },
+  { title: '请求方法', dataIndex: 'method', key: 'method', align: 'center' },
+  { title: '描述', dataIndex: 'description', key: 'description', align: 'center' },
+  { title: '操作', dataIndex: 'action', key: 'action', align: 'center' }
 ]
 
 // 查询参数

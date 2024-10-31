@@ -1,21 +1,11 @@
 <template>
   <a-card>
-    <div class="api">
-      <Form />
-      <Table />
-    </div>
+    <Table />
   </a-card>
 </template>
 
 <script setup lang="ts">
-import Form from './form.vue'
 import Table from './table.vue'
 </script>
 
-<style scoped lang="less">
-.api {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-</style>
+<style scoped lang="less"></style>

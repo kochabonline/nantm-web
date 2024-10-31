@@ -20,11 +20,11 @@ import { onBeforeMount, reactive, ref } from 'vue'
 const roleStore = useRoleStore()
 // 表格列
 const columns = [
-  { title: '角色名称', dataIndex: 'name', key: 'name' },
-  { title: '状态', key: 'status', dataIndex: 'status' },
-  { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
-  { title: '描述', key: 'description', dataIndex: 'description' },
-  { title: '操作', key: 'action', dataIndex: 'action' }
+  { title: '角色名称', dataIndex: 'name', key: 'name', align: 'center' },
+  { title: '状态', key: 'status', dataIndex: 'status', align: 'center' },
+  { title: '创建时间', key: 'created_at', dataIndex: 'created_at', align: 'center' },
+  { title: '描述', key: 'description', dataIndex: 'description', align: 'center' },
+  { title: '操作', key: 'action', dataIndex: 'action', align: 'center' }
 ]
 
 // 查询参数

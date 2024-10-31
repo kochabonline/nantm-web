@@ -60,7 +60,7 @@ const findParentKey = (
   return null
 }
 
-const setDefaultKeys = () => {
+const setKeys = () => {
   const currentKey = router.currentRoute.value.name?.toString() || ''
   const currentParentKey = findParentKey(props.menus, currentKey) || currentKey
 
@@ -68,22 +68,26 @@ const setDefaultKeys = () => {
   state.openKeys = [currentParentKey]
 }
 
-// 首次渲染时设置默认选中项
+// 首次渲染时设置选中项
 onMounted(() => {
-  try {
-    setDefaultKeys()
-  } catch (error) {
-    /* empty */
-  }
+  setKeys()
 })
 
-// 监听 props 变化
+// 渲染后才能获取到 menus
 watch(
   () => props.menus,
   () => {
-    setDefaultKeys()
+    setKeys()
   },
   { deep: true }
+)
+
+// 监听路由变化
+watch(
+  () => router.currentRoute.value.fullPath,
+  () => {
+    setKeys()
+  }
 )
 </script>
 
