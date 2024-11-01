@@ -2,6 +2,8 @@
   <a-modal
     :open="openRef"
     :wrap-style="{ overflow: 'hidden' }"
+    :body-style="{ maxHeight: '60vh', overflowY: 'auto' }"
+    :width="props.width"
     @cancel="handleCancel"
     @ok="handleOk"
   >
@@ -24,6 +26,7 @@
 import { ref, computed, type CSSProperties, watch, watchEffect } from 'vue'
 import { useDraggable } from '@vueuse/core'
 import { ModalProps } from './props'
+import type { over } from 'lodash'
 
 const props = defineProps(ModalProps)
 

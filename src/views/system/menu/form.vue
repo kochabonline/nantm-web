@@ -10,26 +10,64 @@
       @cancel="handleCancel"
     >
       <a-form ref="formRef" :model="formState" :rules="rules" v-bind="layout" name="form_in_modal">
-        <a-form-item name="name" label="名称">
+        <a-form-item name="name" label="菜单名称">
           <a-input v-model:value="formState.name" placeholder="请输入" />
         </a-form-item>
-        <a-form-item name="path" label="路径">
+        <a-form-item name="parent" label="父级菜单">
+          <a-tree-select
+            v-model:value="formState.parent"
+            style="width: 100%"
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            placeholder="请选择"
+            allow-clear
+            :tree-data="routeStore.getTreeMenus"
+            tree-node-filter-prop="label"
+          ></a-tree-select>
+        </a-form-item>
+        <a-form-item name="path" label="路由地址">
           <a-input v-model:value="formState.path" placeholder="请输入" />
         </a-form-item>
-        <a-form-item name="method" label="请求方法">
+        <a-form-item name="component" label="组件">
+          <a-input v-model:value="formState.component" placeholder="请输入" />
+        </a-form-item>
+        <a-form-item name="title" label="标题">
+          <a-input v-model:value="formState.title" placeholder="请输入" />
+        </a-form-item>
+        <a-form-item name="icon" label="图标">
+          <a-input v-model:value="formState.icon" placeholder="请输入" />
+        </a-form-item>
+        <a-form-item name="hidden" label="是否隐藏">
           <a-select
-            v-model:value="formState.method"
+            ref="select"
+            v-model:value="hidden"
             show-search
             style="width: 100%"
-            :options="filteredOptions.map((item) => ({ value: item }))"
+            :options="selectOptions"
             :showArrow="false"
-          ></a-select>
+            @change="
+              (e: string) => {
+                formState.hidden = e === 'true'
+              }
+            "
+          />
         </a-form-item>
-        <a-form-item name="group" label="组">
-          <a-input v-model:value="formState.group" placeholder="请输入" />
+        <a-form-item name="keepAlive" label="是否缓存">
+          <a-select
+            ref="select"
+            v-model:value="keepAlive"
+            show-search
+            style="width: 100%"
+            :options="selectOptions"
+            :showArrow="false"
+            @change="
+              (e: string) => {
+                formState.keepAlive = e === 'true'
+              }
+            "
+          />
         </a-form-item>
-        <a-form-item name="description" label="描述">
-          <a-input v-model:value="formState.description" placeholder="请输入" />
+        <a-form-item name="order" label="排序">
+          <a-input-number v-model:value="formState.order" :controls="false" />
         </a-form-item>
       </a-form>
     </Modal>
@@ -37,13 +75,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
-import { message, type FormInstance } from 'ant-design-vue'
+import { reactive, ref, watch } from 'vue'
+import { message, type FormInstance, type SelectProps } from 'ant-design-vue'
 import { debounce } from 'lodash'
 import Modal from '@/components/modal/index.vue'
-import { useApiStore } from '@/stores/api'
-import type { ApiRequest } from '@/types/api'
 import type { PaginationRequest } from '@/types/request'
+import type { MenuRequest } from '@/types/menu'
+import { useMenuStore } from '@/stores/menu'
+import { useRouteStore } from '@/stores/route'
 
 const props = defineProps({
   isUpdate: Boolean,
@@ -51,29 +90,43 @@ const props = defineProps({
 })
 const emit = defineEmits(['reset'])
 
-const apiStore = useApiStore()
+const routeStore = useRouteStore()
+const menuStore = useMenuStore()
 
 const formRef = ref<FormInstance>()
-const formState = reactive<ApiRequest>({
+const formState = reactive<MenuRequest>({
+  parent: '',
   name: '',
   path: '',
-  method: '',
-  description: '',
-  group: ''
+  component: '',
+  redirect: '',
+  icon: '',
+  hidden: false,
+  keepAlive: false,
+  title: '',
+  order: ''
 })
 const rules = {
-  parent_id: [{ required: true, message: '请选择父级菜单', trigger: 'change' }]
+  name: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+  path: [{ required: true, message: '请输入路由地址', trigger: 'blur' }],
+  title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+  icon: [{ required: true, message: '请输入图标', trigger: 'blur' }],
+  order: [{ type: 'number', message: '排序只能是数字', trigger: 'blur' }]
 }
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 16 }
 }
 
-const OPTIONS = ['GET', 'POST', 'DELETE', 'PUT', 'PATCH']
-const selectedItems = ref<string[]>([])
-const filteredOptions = computed(() => OPTIONS.filter((o) => !selectedItems.value.includes(o)))
+const selectOptions = ref<SelectProps['options']>([
+  { label: '是', value: 'true' },
+  { label: '否', value: 'false' }
+])
+const hidden = ref('否')
+const keepAlive = ref('否')
 
 const open = ref(false)
+
 const showModal = () => {
   open.value = true
 }
@@ -85,30 +138,7 @@ const handleOk = debounce(() => {
   formRef.value
     ?.validate()
     .then(async () => {
-      if (props.isUpdate) {
-        const isDifferent = (Object.keys(formState) as (keyof ApiRequest)[]).some(
-          (key) => formState[key] !== props.record?.[key]
-        )
-        if (isDifferent) {
-          await apiStore.updateApi(props.record?.id, formState)
-          // 关闭模态框
-          open.value = false
-          emit('reset')
-          // 刷新列表
-          await refresh()
-        } else {
-          message.info('数据未发生变化')
-        }
-      } else {
-        // 提交表单
-        await apiStore.addApi(formState)
-        // 关闭模态框
-        open.value = false
-        // 清空表单
-        formRef.value?.resetFields()
-        // 刷新列表
-        await refresh()
-      }
+      console.log(formState)
     })
     .catch(() => {})
 }, 150)
@@ -119,7 +149,6 @@ const refresh = async () => {
     size: 0,
     keyword: ''
   }
-  await apiStore.getApis(req)
 }
 
 /** 如果是编辑模式, 初始化表单 */

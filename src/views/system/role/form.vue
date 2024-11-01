@@ -3,7 +3,7 @@
     <a-button type="primary" @click="showModal">新增角色</a-button>
     <Modal title="新增角色" :open="open" @ok="handleOk" @cancel="handleCancel">
       <a-form ref="formRef" :model="formState" :rules="rules" v-bind="layout" name="form_in_modal">
-        <a-form-item name="name" label="角色名">
+        <a-form-item name="name" label="角色名称">
           <a-input v-model:value="formState.name" placeholder="请输入" />
         </a-form-item>
         <a-form-item name="description" label="描述">

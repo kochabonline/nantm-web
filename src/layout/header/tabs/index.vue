@@ -38,13 +38,6 @@ const visible = ref(false)
 const style = ref({ top: '0px', left: '0px' })
 const items = [
   {
-    key: 'close',
-    text: '关闭标签页',
-    onClick: () => {
-      visible.value = false
-    }
-  },
-  {
     key: 'closeAll',
     text: '关闭全部标签页',
     onClick: () => {
@@ -72,9 +65,9 @@ watch(
     const { name, meta } = router.currentRoute.value
     const tab = {
       name: name?.toString() || '',
-      title: meta.title as string,
-      keepalive: meta.keepalive as boolean,
-      closable: true
+      title: (meta.title as string) || '',
+      keepalive: meta.keepalive !== undefined ? (meta.keepalive as boolean) : false,
+      closable: meta.closable !== undefined ? (meta.closable as boolean) : true
     }
     tabsStore.addTab(tab)
   },

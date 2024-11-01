@@ -8,23 +8,16 @@ interface Tab {
   closable: boolean
 }
 
-const DefaultTab: Tab = {
-  name: 'Analysis',
-  title: '仪表盘',
-  keepalive: false,
-  closable: false
-}
-
 export const useTabsStore = defineStore('tabs', {
   state: () => ({
-    tabs: [DefaultTab] as Tab[],
+    tabs: [] as Tab[],
     activeTab: {} as Tab,
     exclude: [] as string[]
   }),
   persist: [
     {
       key: 'app',
-      pick: ['tabs', 'activeKey'],
+      pick: ['tabs'],
       storage: localStorage
     }
   ],
@@ -75,8 +68,8 @@ export const useTabsStore = defineStore('tabs', {
       }
     },
     closeAllTabs() {
-      this.tabs = [DefaultTab]
-      this.setActiveTab(DefaultTab)
+      this.tabs = this.tabs.splice(0, 1)
+      this.setActiveTab(this.tabs[0])
     }
   }
 })

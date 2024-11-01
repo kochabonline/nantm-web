@@ -16,10 +16,11 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'analysis',
         name: 'Analysis',
-        component: () => import('@/views/dashboard/DashboardView.vue'),
+        component: () => import('@/views/dashboard/analysis/index.vue'),
         meta: {
-          title: '仪表盘',
-          icon: DashboardOutlined
+          title: '分析页',
+          icon: DashboardOutlined,
+          closable: false
         }
       }
     ]

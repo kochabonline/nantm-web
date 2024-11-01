@@ -4,16 +4,21 @@ import routes from '@/router/routes'
 import { type DefineComponent } from 'vue'
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import { iconComponent } from '@/utils/icon'
+import type { TreeSelectProps } from 'ant-design-vue'
 
 export const useRouteStore = defineStore('route', {
   state: () => ({
     routes: routes,
     menus: [] as Menu[],
-    isMenusSet: false
+    isMenusSet: false,
+    treeMenus: [] as TreeSelectProps['treeData']
   }),
   getters: {
     getMenus(): Menu[] {
       return this.menus
+    },
+    getTreeMenus(): TreeSelectProps['treeData'] {
+      return this.treeMenus
     }
   },
   actions: {
@@ -43,6 +48,19 @@ export const useRouteStore = defineStore('route', {
 
       this.menus = processRoutes(this.routes)
       this.isMenusSet = true
+    },
+    setTreeMenus() {
+      const processTreeMenus = (menus: Menu[]): TreeSelectProps['treeData'] => {
+        return menus.map((menu) => {
+          return {
+            label: menu.title,
+            value: menu.title,
+            children: menu.children ? processTreeMenus(menu.children) : []
+          }
+        })
+      }
+
+      this.treeMenus = processTreeMenus(this.menus)
     }
   }
 })

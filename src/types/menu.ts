@@ -23,11 +23,11 @@ interface meta {
   /** 是否隐藏菜单 */
   hidden: boolean
   /** 是否缓存菜单 */
-  noCache: boolean
-  /** 是否固定菜单 */
-  affix: boolean
-  /** 是否固定标签 */
-  tag: boolean
+  keepAlive: boolean
+  /** 菜单标题 */
+  title: string
+  /** 菜单排序 */
+  order: number
 }
 
 interface Menu extends menu {
@@ -35,8 +35,31 @@ interface Menu extends menu {
 }
 
 interface Menus {
-    total: number
-    items: Menu[]
+  total: number
+  items: Menu[]
 }
 
-export type { Menu, Menus }
+interface MenuRequest {
+  /** 父级菜单 */
+  parent: string
+  /** 菜单名称 */
+  name: string
+  /** 菜单路径 */
+  path: string
+  /** 菜单组件 */
+  component: string
+  /** 菜单重定向 */
+  redirect: string
+  /** 菜单图标 */
+  icon: string
+  /** 是否隐藏菜单 */
+  hidden: boolean
+  /** 是否缓存菜单 */
+  keepAlive: boolean
+  /** 菜单标题 */
+  title: string
+  /** 菜单排序 */
+  order: string
+}
+
+export type { Menu, Menus, MenuRequest }

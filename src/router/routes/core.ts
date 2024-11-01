@@ -22,7 +22,7 @@ const coreRoutes: RouteRecordRaw[] = [
       {
         path: 'login',
         name: 'Login',
-        component: () => import('@/views/authentication/LoginView.vue'),
+        component: () => import('@/views/authentication/login.vue'),
         meta: {
           title: '登录',
           hideInMenu: true
@@ -36,7 +36,7 @@ const fallbackRoutes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: '404',
-    component: () => import('@/views/fallback/NotFoundView.vue'),
+    component: () => import('@/views/fallback/404/index.vue'),
     meta: {
       title: 'NotFound',
       hideInMenu: true
