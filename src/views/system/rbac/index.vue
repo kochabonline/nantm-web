@@ -6,6 +6,9 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'Rbac'
+})
 import Form from './form.vue'
 import Table from './table.vue'
 </script>

@@ -10,7 +10,7 @@
     @contextmenu.prevent="onContextmenu"
   >
     <a-tab-pane
-      v-for="pane in tabsStore.getTabs"
+      v-for="pane in tabsStore.tabs"
       :key="pane.name"
       :tab="pane.title"
       :closable="pane.closable"
@@ -65,9 +65,9 @@ watch(
     const { name, meta } = router.currentRoute.value
     const tab = {
       name: name?.toString() || '',
-      title: (meta.title as string) || '',
-      keepalive: meta.keepalive !== undefined ? (meta.keepalive as boolean) : false,
-      closable: meta.closable !== undefined ? (meta.closable as boolean) : true
+      title: meta.title !== undefined ? (meta.title as string) : '',
+      closable: meta.closable !== undefined ? (meta.closable as boolean) : true,
+      keepAlive: meta.keepAlive !== undefined ? (meta.keepAlive as boolean) : false
     }
     tabsStore.addTab(tab)
   },

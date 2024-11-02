@@ -5,6 +5,9 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'Analysis'
+})
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()

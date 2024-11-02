@@ -20,7 +20,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '账户管理',
           icon: UserOutlined,
-          keepalive: true
+          keepAlive: true
         }
       },
       {
@@ -30,17 +30,17 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '角色管理',
           icon: 'icon-role',
-          keepalive: true
+          keepAlive: true
         }
       },
       {
         path: '/system/menu',
-        name: 'Menu',
+        name: 'AppMenu',
         component: () => import('@/views/system/menu/index.vue'),
         meta: {
           title: '菜单管理',
           icon: MenuOutlined,
-          keepalive: true
+          keepAlive: true
         }
       },
       {
@@ -50,7 +50,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '接口管理',
           icon: ApiOutlined,
-          keepalive: true
+          keepAlive: true
         }
       }
     ]

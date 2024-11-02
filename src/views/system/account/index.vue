@@ -8,6 +8,9 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'Account'
+})
 import Table from './table.vue'
 import Form from './form.vue'
 </script>

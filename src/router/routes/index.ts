@@ -8,4 +8,5 @@ const dynamicRoutes: RouteRecordRaw[] = mergeRouteModules(dynamicRouteFiles)
 
 const routes: RouteRecordRaw[] = [...coreRoutes, ...fallbackRoutes, ...dynamicRoutes]
 
+export { dynamicRoutes }
 export default routes

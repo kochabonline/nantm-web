@@ -7,6 +7,9 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'AppMenu'
+})
 import Table from './table.vue'
 </script>
 

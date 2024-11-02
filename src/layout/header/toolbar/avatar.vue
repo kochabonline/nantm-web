@@ -39,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-import router from '@/router'
 
 import type { MenuProps } from 'ant-design-vue'
 import { iconComponent } from '@/utils/icon'
@@ -52,9 +51,7 @@ const userStore = useUserStore()
 
 const onClick: MenuProps['onClick'] = async ({ key }) => {
   if (key === 'Logout') {
-    await authStore.logout()
-  } else {
-    router.push({ name: `${key}` })
+    authStore.logout()
   }
 }
 </script>

@@ -165,6 +165,9 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'Channel'
+})
 import { onBeforeMount, ref, reactive, computed } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'

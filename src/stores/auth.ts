@@ -14,6 +14,11 @@ interface CustomJwtPayload extends JwtPayload {
   userRole: string
 }
 
+function isValidJwt(token: string): boolean {
+  const parts = token.split('.')
+  return parts.length === 3
+}
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     loading: false,
@@ -32,21 +37,28 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     isAuthenticated: (state) => computed(() => !!state.accessToken).value,
     isFetchUserInfo: (state) => computed(() => state.fetchUserInfo).value,
-    userId: (state) => computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userId).value,
+    userId: (state) =>
+      computed(() =>
+        isValidJwt(state.accessToken) ? jwtDecode<CustomJwtPayload>(state.accessToken).userId : 0
+      ).value,
     username: (state) =>
-      computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).username).value,
+      computed(() =>
+        isValidJwt(state.accessToken) ? jwtDecode<CustomJwtPayload>(state.accessToken).username : ''
+      ).value,
     userRole: (state) =>
-      computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).userRole).value,
+      computed(() =>
+        isValidJwt(state.accessToken) ? jwtDecode<CustomJwtPayload>(state.accessToken).userRole : ''
+      ).value,
     accessTokenExp: (state) =>
-      computed(() => jwtDecode<CustomJwtPayload>(state.accessToken).exp).value,
+      computed(() =>
+        isValidJwt(state.accessToken) ? jwtDecode<CustomJwtPayload>(state.accessToken).exp : 0
+      ).value,
     refreshTokenExp: (state) =>
-      computed(() => jwtDecode<CustomJwtPayload>(state.refreshToken).exp).value
+      computed(() =>
+        isValidJwt(state.refreshToken) ? jwtDecode<CustomJwtPayload>(state.refreshToken).exp : 0
+      ).value
   },
   actions: {
-    /**
-     * 账号密码登录
-     * @param req 账号密码登录请求
-     */
     async login(req: LoginRequest) {
       try {
         this.loading = true
@@ -56,7 +68,6 @@ export const useAuthStore = defineStore('auth', {
           this.accessToken = response.data.access_token
           this.refreshToken = response.data.refresh_token
 
-          // 存在 redirect 查询参数，则跳转到该地址
           const redirect = (router.currentRoute.value.query.redirect as string) || {
             name: 'Dashboard'
           }
@@ -70,9 +81,6 @@ export const useAuthStore = defineStore('auth', {
         this.loading = false
       }
     },
-    /**
-     * 退出登录
-     */
     async logout() {
       try {
         const req: LogoutRequest = {
@@ -80,10 +88,10 @@ export const useAuthStore = defineStore('auth', {
         }
         const response = await Logout(req)
         if (response.code === 200) {
-          this.$reset()
-          // 在退出登录后，将当前地址作为查询参数附加到登录路由中
           const currentRoute = router.currentRoute.value.fullPath
           router.push({ name: 'Login', query: { redirect: currentRoute } })
+
+          this.$reset()
         } else {
           throw new Error(response.message)
         }
@@ -91,9 +99,6 @@ export const useAuthStore = defineStore('auth', {
         return Promise.reject(error)
       }
     },
-    /**
-     * 刷新 token
-     */
     async refresh() {
       try {
         const req: RefreshRequest = {
@@ -109,10 +114,6 @@ export const useAuthStore = defineStore('auth', {
         return Promise.reject(error)
       }
     },
-    /**
-     * 获取用户信息
-     * @returns 用户信息
-     */
     async getUserInfo() {
       const userStore = useUserStore()
       if (this.fetchUserInfo) return
@@ -123,9 +124,6 @@ export const useAuthStore = defineStore('auth', {
         return Promise.reject(error)
       }
     },
-    /**
-     * 重置 store
-     */
     async reset() {
       this.$reset()
     }

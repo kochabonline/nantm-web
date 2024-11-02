@@ -1,4 +1,4 @@
-import { DashboardOutlined, HomeOutlined } from '@ant-design/icons-vue'
+import { HomeOutlined, RadarChartOutlined } from '@ant-design/icons-vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -19,8 +19,9 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/dashboard/analysis/index.vue'),
         meta: {
           title: '分析页',
-          icon: DashboardOutlined,
-          closable: false
+          icon: RadarChartOutlined,
+          closable: false,
+          keepAlive: false
         }
       }
     ]

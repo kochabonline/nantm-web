@@ -13,6 +13,9 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'Control'
+})
 import Table from '@/components/table/index.vue'
 import { computed, reactive, ref } from 'vue'
 import { useMessageStore } from '@/stores/message'

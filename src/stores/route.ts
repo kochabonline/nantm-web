@@ -10,15 +10,24 @@ export const useRouteStore = defineStore('route', {
   state: () => ({
     routes: routes,
     menus: [] as Menu[],
-    isMenusSet: false,
-    treeMenus: [] as TreeSelectProps['treeData']
+    isMenusSet: false
   }),
   getters: {
     getMenus(): Menu[] {
       return this.menus
     },
     getTreeMenus(): TreeSelectProps['treeData'] {
-      return this.treeMenus
+      const processTreeMenus = (menus: Menu[]): TreeSelectProps['treeData'] => {
+        return menus.map((menu) => {
+          return {
+            label: menu.title,
+            value: menu.title,
+            children: menu.children ? processTreeMenus(menu.children) : []
+          }
+        })
+      }
+
+      return processTreeMenus(this.menus)
     }
   },
   actions: {
@@ -48,19 +57,6 @@ export const useRouteStore = defineStore('route', {
 
       this.menus = processRoutes(this.routes)
       this.isMenusSet = true
-    },
-    setTreeMenus() {
-      const processTreeMenus = (menus: Menu[]): TreeSelectProps['treeData'] => {
-        return menus.map((menu) => {
-          return {
-            label: menu.title,
-            value: menu.title,
-            children: menu.children ? processTreeMenus(menu.children) : []
-          }
-        })
-      }
-
-      this.treeMenus = processTreeMenus(this.menus)
     }
   }
 })

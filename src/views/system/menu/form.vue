@@ -1,8 +1,9 @@
 <template>
   <div>
-    <a-button v-if="!props.isUpdate && !props.record" type="primary" @click="showModal"
-      >新增菜单</a-button
-    >
+    <div class="menu-button">
+      <a-button type="primary" @click="showModal">新增菜单</a-button>
+      <a-button type="default" :icon="iconComponent(RedoOutlined)">一键同步</a-button>
+    </div>
     <Modal
       :title="props.isUpdate ? '编辑菜单' : '新增菜单'"
       :open="open"
@@ -77,12 +78,14 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import { message, type FormInstance, type SelectProps } from 'ant-design-vue'
+import { RedoOutlined } from '@ant-design/icons-vue'
 import { debounce } from 'lodash'
 import Modal from '@/components/modal/index.vue'
 import type { PaginationRequest } from '@/types/request'
 import type { MenuRequest } from '@/types/menu'
 import { useMenuStore } from '@/stores/menu'
 import { useRouteStore } from '@/stores/route'
+import { iconComponent } from '@/utils/icon'
 
 const props = defineProps({
   isUpdate: Boolean,
@@ -164,4 +167,9 @@ watch(
 )
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.menu-button {
+  display: flex;
+  gap: 10px;
+}
+</style>
