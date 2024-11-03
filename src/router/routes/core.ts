@@ -7,7 +7,7 @@ const coreRoutes: RouteRecordRaw[] = [
     redirect: { name: 'Login' },
     meta: {
       title: 'Root',
-      hideInMenu: true
+      hidden: true
     }
   },
   {
@@ -16,7 +16,7 @@ const coreRoutes: RouteRecordRaw[] = [
     redirect: { name: 'Login' },
     meta: {
       title: '认证',
-      hideInMenu: true
+      hidden: true
     },
     children: [
       {
@@ -25,7 +25,7 @@ const coreRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/authentication/login.vue'),
         meta: {
           title: '登录',
-          hideInMenu: true
+          hidden: true
         }
       }
     ]
@@ -39,7 +39,7 @@ const fallbackRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/fallback/404/index.vue'),
     meta: {
       title: 'NotFound',
-      hideInMenu: true
+      hidden: true
     }
   }
 ]

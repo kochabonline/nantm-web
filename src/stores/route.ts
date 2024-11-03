@@ -36,7 +36,7 @@ export const useRouteStore = defineStore('route', {
 
       const processRoutes = (routes: RouteRecordRaw[]): Menu[] => {
         return routes
-          .filter((route) => !route.meta?.hideInMenu)
+          .filter((route) => !route.meta?.hidden)
           .map((route) => {
             const { name, meta, children } = route
             const title = (meta?.title as string) || ''

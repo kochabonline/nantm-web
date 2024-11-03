@@ -31,7 +31,7 @@
   </a-dropdown>
   <!-- 快捷键: Alt + Q 退出登录 -->
   <Shortcut
-    :keys="['q']"
+    :keys="['Q']"
     :alt="true"
     :callback="authStore.logout"
     content="是否确认退出?"
@@ -39,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-
 import type { MenuProps } from 'ant-design-vue'
 import { iconComponent } from '@/utils/icon'
 import { useAuthStore } from '@/stores/auth'

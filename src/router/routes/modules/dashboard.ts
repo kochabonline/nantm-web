@@ -20,8 +20,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '分析页',
           icon: RadarChartOutlined,
-          closable: false,
-          keepAlive: false
+          closable: false
         }
       }
     ]

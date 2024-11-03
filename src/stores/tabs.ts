@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import router from '@/router'
-import { dynamicRoutes } from '@/router/routes'
 
 // https://cn.vuejs.org/guide/built-ins/keep-alive
 // 在 3.2.34 或以上的版本中，使用 <script setup> 的单文件组件会自动根据文件名生成对应的 name 选项
@@ -24,7 +23,7 @@ export const useTabsStore = defineStore('tabs', {
   persist: [
     {
       key: 'app',
-      pick: ['tabs'],
+      pick: ['tabs', 'include'],
       storage: localStorage
     }
   ],
@@ -39,9 +38,7 @@ export const useTabsStore = defineStore('tabs', {
 
       const index = this.tabs.findIndex((item) => item.name === tab.name)
       if (index === -1) {
-        if (this.hasTab(tab.name)) {
-          this.tabs.push(tab)
-        }
+        this.tabs.push(tab)
         // 从exclude中移除，加入到include中
         if (tab.keepAlive) {
           this.include.push(tab.name)
@@ -85,14 +82,6 @@ export const useTabsStore = defineStore('tabs', {
       this.include = closableTabs.map((tab) => tab.name)
 
       this.setActiveTab(this.tabs[0])
-    },
-    hasTab(name: string): boolean {
-      return dynamicRoutes.some((route) => {
-        if (route.name === name) {
-          return true
-        }
-        return route.children?.some((child) => child.name === name)
-      })
     }
   }
 })

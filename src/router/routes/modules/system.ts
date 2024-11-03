@@ -19,8 +19,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/account/index.vue'),
         meta: {
           title: '账户管理',
-          icon: UserOutlined,
-          keepAlive: true
+          icon: UserOutlined
         }
       },
       {
@@ -29,8 +28,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/role/index.vue'),
         meta: {
           title: '角色管理',
-          icon: 'icon-role',
-          keepAlive: true
+          icon: 'icon-role'
         }
       },
       {

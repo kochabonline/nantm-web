@@ -19,8 +19,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/message/ControlView.vue'),
         meta: {
           title: '控制台',
-          icon: 'icon-kongzhitai',
-          keepAlive: true
+          icon: 'icon-kongzhitai'
         }
       },
       {
@@ -29,8 +28,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/message/ChannelView.vue'),
         meta: {
           title: '通道',
-          icon: NotificationOutlined,
-          keepAlive: true
+          icon: NotificationOutlined
         }
       }
     ]

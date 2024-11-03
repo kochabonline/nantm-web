@@ -60,7 +60,7 @@ const open = ref<boolean>(false)
 const pressedKeys = new Set<string>()
 
 const handleKeydown = (event: KeyboardEvent) => {
-  pressedKeys.add(event.key)
+  pressedKeys.add(event.key.toUpperCase())
 
   const { alt, ctrl, shift, keys } = props
 
@@ -68,7 +68,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     (alt === undefined || event.altKey === alt) &&
     (ctrl === undefined || event.ctrlKey === ctrl) &&
     (shift === undefined || event.shiftKey === shift) &&
-    keys.every((key) => pressedKeys.has(key))
+    keys.every((key) => pressedKeys.has(key.toUpperCase()))
   ) {
     event.preventDefault()
     open.value = true

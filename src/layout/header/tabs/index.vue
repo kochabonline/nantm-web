@@ -50,7 +50,10 @@ const updateVisible = (val: boolean) => {
   visible.value = val
 }
 const onContextmenu = (e: MouseEvent) => {
+  // 阻止默认右键菜单
   e.preventDefault()
+  // 阻止事件冒泡
+  e.stopPropagation()
 
   style.value = {
     top: `${e.clientY}px`,
@@ -62,6 +65,8 @@ const onContextmenu = (e: MouseEvent) => {
 watch(
   () => router.currentRoute.value.fullPath,
   () => {
+    if (router.currentRoute.value.meta.hidden) return
+
     const { name, meta } = router.currentRoute.value
     const tab = {
       name: name?.toString() || '',

@@ -68,7 +68,7 @@
           />
         </a-form-item>
         <a-form-item name="order" label="排序">
-          <a-input-number v-model:value="formState.order" :controls="false" />
+          <a-input-number v-model:value="formState.order" :controls="false" placeholder="数字" />
         </a-form-item>
       </a-form>
     </Modal>
@@ -125,7 +125,7 @@ const selectOptions = ref<SelectProps['options']>([
   { label: '是', value: 'true' },
   { label: '否', value: 'false' }
 ])
-const hidden = ref('否')
+const hidden = ref('是')
 const keepAlive = ref('否')
 
 const open = ref(false)
