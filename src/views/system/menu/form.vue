@@ -2,7 +2,9 @@
   <div>
     <div class="menu-button">
       <a-button type="primary" @click="showModal">新增菜单</a-button>
-      <a-button type="default" :icon="iconComponent(RedoOutlined)">一键同步</a-button>
+      <a-button type="default" :icon="iconComponent(RedoOutlined)" @click="OneSync"
+        >一键同步</a-button
+      >
     </div>
     <Modal
       :title="props.isUpdate ? '编辑菜单' : '新增菜单'"
@@ -11,12 +13,12 @@
       @cancel="handleCancel"
     >
       <a-form ref="formRef" :model="formState" :rules="rules" v-bind="layout" name="form_in_modal">
-        <a-form-item name="name" label="菜单名称">
+        <a-form-item name="name" label="名称">
           <a-input v-model:value="formState.name" placeholder="请输入" />
         </a-form-item>
         <a-form-item name="parent" label="父级菜单">
           <a-tree-select
-            v-model:value="formState.parent"
+            v-model:value="formState.parent_name"
             style="width: 100%"
             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
             placeholder="请选择"
@@ -77,11 +79,10 @@
 
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
-import { message, type FormInstance, type SelectProps } from 'ant-design-vue'
+import { type FormInstance, type SelectProps } from 'ant-design-vue'
 import { RedoOutlined } from '@ant-design/icons-vue'
 import { debounce } from 'lodash'
 import Modal from '@/components/modal/index.vue'
-import type { PaginationRequest } from '@/types/request'
 import type { MenuRequest } from '@/types/menu'
 import { useMenuStore } from '@/stores/menu'
 import { useRouteStore } from '@/stores/route'
@@ -98,7 +99,7 @@ const menuStore = useMenuStore()
 
 const formRef = ref<FormInstance>()
 const formState = reactive<MenuRequest>({
-  parent: '',
+  parent_name: '',
   name: '',
   path: '',
   component: '',
@@ -107,7 +108,7 @@ const formState = reactive<MenuRequest>({
   hidden: false,
   keepAlive: false,
   title: '',
-  order: ''
+  order: 0
 })
 const rules = {
   name: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
@@ -125,11 +126,14 @@ const selectOptions = ref<SelectProps['options']>([
   { label: '是', value: 'true' },
   { label: '否', value: 'false' }
 ])
-const hidden = ref('是')
+const hidden = ref('否')
 const keepAlive = ref('否')
 
-const open = ref(false)
+const OneSync = async () => {
+  await menuStore.addMenus()
+}
 
+const open = ref(false)
 const showModal = () => {
   open.value = true
 }
@@ -141,18 +145,10 @@ const handleOk = debounce(() => {
   formRef.value
     ?.validate()
     .then(async () => {
-      console.log(formState)
+      await menuStore.addMenu(formState)
     })
     .catch(() => {})
 }, 150)
-
-const refresh = async () => {
-  const req: PaginationRequest = {
-    page: 0,
-    size: 0,
-    keyword: ''
-  }
-}
 
 /** 如果是编辑模式, 初始化表单 */
 watch(

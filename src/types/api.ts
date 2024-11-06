@@ -20,6 +20,10 @@ interface Apis {
   items: Api[]
 }
 
+interface TreeApi extends Api {
+  children: TreeApi[]
+}
+
 interface ApiRequest extends api {}
 
-export type { Api, Apis, ApiRequest }
+export type { Api, Apis, TreeApi, ApiRequest }

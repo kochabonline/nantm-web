@@ -3,7 +3,7 @@
     <Table
       :loading="loading"
       :columns="columns"
-      :data="apiStore.apis.items"
+      :data-source="apiStore.apis.items"
       :pagination="pagination"
       :action="{ onEdit, onDelete }"
     >

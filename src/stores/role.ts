@@ -7,7 +7,7 @@ import { formatDate } from '@/utils/format'
 export const useRoleStore = defineStore('role', {
   state: () => ({
     role: {} as Role,
-    roles: {total: 0, items: [] } as Roles
+    roles: { total: 0, items: [] } as Roles
   }),
   getters: {},
   actions: {

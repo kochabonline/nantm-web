@@ -9,6 +9,20 @@
         <a-form-item name="description" label="描述">
           <a-textarea v-model:value="formState.description" placeholder="请输入" />
         </a-form-item>
+        菜单权限：
+        <a-tree
+          v-model:checkedKeys="menuCheckedKeys"
+          checkable
+          :tree-data="menuStore.treeMenu"
+          :field-names="fieldNames"
+        ></a-tree>
+        API权限:
+        <a-tree
+          v-model:checkedKeys="apiCheckedKeys"
+          checkable
+          :tree-data="apiStore.apis.items"
+          :field-names="fieldNames"
+        ></a-tree>
       </a-form>
     </Modal>
   </div>
@@ -20,9 +34,26 @@ import { useRoleStore } from '@/stores/role'
 import type { CreateRoleRequest } from '@/types/role'
 import type { PaginationRequest } from '@/types/request'
 import type { FormInstance } from 'ant-design-vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
+import { useMenuStore } from '@/stores/menu'
+import { useApiStore } from '@/stores/api'
 
 const roleStore = useRoleStore()
+const menuStore = useMenuStore()
+const apiStore = useApiStore()
+
+const menuCheckedKeys = ref<string[]>([])
+const apiCheckedKeys = ref<string[]>([])
+const fieldNames = {
+  key: 'id'
+}
+
+watch(menuCheckedKeys, () => {
+  console.log('menuCheckedKeys', menuCheckedKeys.value)
+})
+watch(apiCheckedKeys, () => {
+  console.log('apiCheckedKeys', apiCheckedKeys.value)
+})
 
 const formRef = ref<FormInstance>()
 const formState = reactive<CreateRoleRequest>({
@@ -46,7 +77,7 @@ const handleOk = () => {
     ?.validate()
     .then(async () => {
       // 提交表单数据
-      await roleStore.addRole(formState)
+      // await roleStore.addRole(formState)
       open.value = false
       // 清空表单
       formRef.value?.resetFields()

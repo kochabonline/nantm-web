@@ -37,7 +37,7 @@ interface Menu {
   /**
    * @zh_CN 菜单项图标
    */
-  icon?: Component
+  icon?: Component | string
   /**
    * @zh_CN 子菜单的菜单项
    */

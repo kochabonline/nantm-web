@@ -1,5 +1,5 @@
 import { AddApi, DeleteApi, GetApis, UpdateApi } from '@/api/modules/api'
-import type { Api, Apis, ApiRequest } from '@/types/api'
+import type { Api, Apis, ApiRequest, TreeApi } from '@/types/api'
 import type { PaginationRequest } from '@/types/request'
 import { formatDate } from '@/utils/format'
 import { defineStore } from 'pinia'
@@ -7,7 +7,8 @@ import { defineStore } from 'pinia'
 export const useApiStore = defineStore('api', {
   state: () => ({
     api: {} as Api,
-    apis: { total: 0, items: [] } as Apis
+    apis: { total: 0, items: [] } as Apis,
+    treeApis: [] as TreeApi[]
   }),
   actions: {
     async getApis(req: PaginationRequest) {
@@ -61,6 +62,7 @@ export const useApiStore = defineStore('api', {
           created_at: formatDate(item.created_at)
         }
       })
-    }
+    },
+    buildTree() {}
   }
 })

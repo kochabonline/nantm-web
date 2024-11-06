@@ -156,7 +156,7 @@
     <div>
       <Table
         :columns="columns"
-        :data="data"
+        :data-source="data"
         :clipboard="{ keys: ['token'] }"
         :action="{ onDelete: Delete }"
       ></Table>

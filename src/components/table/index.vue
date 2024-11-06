@@ -7,8 +7,9 @@
       <a-table
         :loading="props.loading"
         :columns="props.columns"
-        :data-source="props.data"
+        :dataSource="props.dataSource"
         :pagination="pagination"
+        :rowKey="props.rowKey"
         :scroll="localScroll"
         :size="props.size"
       >
@@ -122,11 +123,18 @@ const props = defineProps({
     required: true
   },
   /**
-   * 表格数据
+   * 数据数组
    */
-  data: {
+  dataSource: {
     type: Array,
     required: true
+  },
+  /**
+   * 行key
+   */
+  rowKey: {
+    type: [String, Function] as PropType<string | ((record: any) => string)>,
+    default: 'id'
   },
   /**
    * 大小
@@ -309,7 +317,7 @@ onMounted(() => {
 })
 // 监听表格数据变化, 动态计算表格高度
 watch(
-  () => props.data,
+  () => props.dataSource,
   () => {
     if (pagination.value.total > pagination.value.pageSize) {
       localScroll.value.y = calculateTableHeight(true)

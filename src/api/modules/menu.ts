@@ -1,14 +1,13 @@
-import type { PaginationRequest } from '@/types/request'
 import { request } from '../request'
 
 import type { Response } from '@/types/response'
-import type { Menu } from '@/types/menu'
+import type { MenuRequest, MultiMenuRequest } from '@/types/menu'
 
 const GetMenu = (id: number) => request.get<Response>(`/api/v1/menu/${id}`)
-const GetMenus = (data: PaginationRequest) =>
-  request.get<Response>('/api/v1/menu', { params: data })
-const AddMenu = (data: Menu) => request.post<Response>('/api/v1/menu', data)
+const GetMenus = () => request.get<Response>('/api/v1/menu')
+const AddMenu = (data: MenuRequest) => request.post<Response>('/api/v1/menu', data)
+const AddMenus = (data: MultiMenuRequest) => request.post<Response>('/api/v1/menu/multi', data)
 const UpdateMenu = (id: number, data: any) => request.put<Response>(`/api/v1/menu/${id}`, data)
 const DeleteMenu = (id: number) => request.delete<Response>(`/api/v1/menu/${id}`)
 
-export { GetMenu, GetMenus, AddMenu, UpdateMenu, DeleteMenu }
+export { GetMenu, GetMenus, AddMenu, AddMenus, UpdateMenu, DeleteMenu }

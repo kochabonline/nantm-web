@@ -3,7 +3,7 @@
     <Table
       :loading="loading"
       :columns="columns"
-      :data="data"
+      :data-source="data"
       :action="{ onDelete: onDelete }"
       :pagination="pagination"
     />

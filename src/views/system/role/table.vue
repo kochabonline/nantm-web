@@ -3,7 +3,7 @@
     <Table
       :loading="loading"
       :columns="columns"
-      :data="roleStore.roles.items"
+      :data-source="roleStore.roles.items"
       :action="{ onDelete: onDelete }"
       :pagination="pagination"
     />

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Table :loading="loading" :columns="columns" :data="data" :pagination="pagination">
+    <Table :loading="loading" :columns="columns" :data-source="data" :pagination="pagination">
       <template #bodyCell="{ column, text }">
         <template v-if="column.key === 'status'">
           <a-tag v-if="text === 'pending'" color="orange">{{ text }}</a-tag>
