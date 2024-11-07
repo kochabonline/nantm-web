@@ -26,7 +26,6 @@
 import { ref, computed, type CSSProperties, watch, watchEffect } from 'vue'
 import { useDraggable } from '@vueuse/core'
 import { ModalProps } from './props'
-import type { over } from 'lodash'
 
 const props = defineProps(ModalProps)
 

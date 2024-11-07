@@ -10,19 +10,18 @@
           <a-textarea v-model:value="formState.description" placeholder="请输入" />
         </a-form-item>
         菜单权限：
-        <a-tree
+        <!-- <a-tree
           v-model:checkedKeys="menuCheckedKeys"
           checkable
           :tree-data="menuStore.treeMenu"
           :field-names="fieldNames"
-        ></a-tree>
-        API权限:
-        <a-tree
-          v-model:checkedKeys="apiCheckedKeys"
-          checkable
-          :tree-data="apiStore.apis.items"
-          :field-names="fieldNames"
-        ></a-tree>
+          @check="onCheck"
+        ></a-tree> -->
+        <Tree
+          :checkedKeys="menuCheckedKeys"
+          :treeData="menuStore.treeMenu"
+          :fieldNames="fieldNames"
+        />
       </a-form>
     </Modal>
   </div>
@@ -36,14 +35,12 @@ import type { PaginationRequest } from '@/types/request'
 import type { FormInstance } from 'ant-design-vue'
 import { reactive, ref, watch } from 'vue'
 import { useMenuStore } from '@/stores/menu'
-import { useApiStore } from '@/stores/api'
+import Tree from '@/components/tree/index.vue'
 
 const roleStore = useRoleStore()
 const menuStore = useMenuStore()
-const apiStore = useApiStore()
 
 const menuCheckedKeys = ref<string[]>([])
-const apiCheckedKeys = ref<string[]>([])
 const fieldNames = {
   key: 'id'
 }
@@ -51,9 +48,11 @@ const fieldNames = {
 watch(menuCheckedKeys, () => {
   console.log('menuCheckedKeys', menuCheckedKeys.value)
 })
-watch(apiCheckedKeys, () => {
-  console.log('apiCheckedKeys', apiCheckedKeys.value)
-})
+const onCheck = (checkedKeys: string[], info: any) => {
+  const { halfCheckedKeys } = info
+  console.log('checkedKeys', checkedKeys)
+  console.log('halfCheckedKeys', halfCheckedKeys)
+}
 
 const formRef = ref<FormInstance>()
 const formState = reactive<CreateRoleRequest>({
