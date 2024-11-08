@@ -14,7 +14,7 @@ import { ref, type PropType } from 'vue'
 
 const props = defineProps({
   checkedKeys: {
-    type: Array as PropType<string[]>,
+    type: Array as PropType<number[] | string[]>,
     default: () => []
   },
   treeData: {
@@ -27,38 +27,37 @@ const props = defineProps({
   }
 })
 
-const checkedKeys = ref<string[]>(props.checkedKeys)
+const checkedKeys = ref<Array<number | string>>(props.checkedKeys)
+
 const onCheck = (keys: any, e: any) => {
-  const { checked } = keys
-  const { node } = e
-  console.log('checked', checked)
+  const { checked, node, checkedNodes } = e
+
+  // checkAllChildren(node, checked)
+  // checkAllParent(node, checked)
+
   console.log('node', node)
+  console.log('checked', checked)
+  console.log('checkedNodes', checkedNodes)
+
+  // checkAllChildren(node, checked)
   console.log('checkedKeys', checkedKeys.value)
 }
 
 // 如果是父节点，全选子节点
-const checkAllChildren = (node: any, checked: boolean) => {
-  node.children.forEach((child: any) => {
-    checkedKeys.value = checkedKeys.value.filter((key) => key !== child[props.fieldNames.key])
-    if (checked) {
-      checkedKeys.value.push(child[props.fieldNames.key])
-    }
-    checkAllChildren(child, checked)
-  })
-}
 
-// 如果是子节点，选中父节点
-const checkParent = (node: any, checked: boolean) => {
-  if (node.parent) {
-    const parent = node.parent
-    parent.children.every((child: any) => checkedKeys.value.includes(child[props.fieldNames.key]))
-    checkedKeys.value = checkedKeys.value.filter((key) => key !== parent[props.fieldNames.key])
-    if (checked) {
-      checkedKeys.value.push(parent[props.fieldNames.key])
-    }
-    checkParent(parent, checked)
-  }
-}
+// // 如果是子节点，选中父节点
+// const checkAllParent = (node: any, checked: string[]) => {
+//   if (node.parent) {
+//     const parent = node.parent
+//     parent.children.every((child: any) => checkedKeys.value.includes(child[props.fieldNames.key]))
+//     checkedKeys.value = checkedKeys.value.filter((key) => key !== parent[props.fieldNames.key])
+//     if (checked) {
+//       checkedKeys.value.push(parent[props.fieldNames.key])
+//       selectedKeys.value.push(parent[props.fieldNames.key])
+//     }
+//     checkAllParent(parent, checked)
+//   }
+// }
 </script>
 
 <style scoped lang="less"></style>

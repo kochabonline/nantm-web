@@ -18,9 +18,8 @@
           @check="onCheck"
         ></a-tree> -->
         <Tree
-          :checkedKeys="menuCheckedKeys"
+          :keys="menuKeys"
           :treeData="menuStore.treeMenu"
-          :fieldNames="fieldNames"
         />
       </a-form>
     </Modal>
@@ -40,19 +39,7 @@ import Tree from '@/components/tree/index.vue'
 const roleStore = useRoleStore()
 const menuStore = useMenuStore()
 
-const menuCheckedKeys = ref<string[]>([])
-const fieldNames = {
-  key: 'id'
-}
-
-watch(menuCheckedKeys, () => {
-  console.log('menuCheckedKeys', menuCheckedKeys.value)
-})
-const onCheck = (checkedKeys: string[], info: any) => {
-  const { halfCheckedKeys } = info
-  console.log('checkedKeys', checkedKeys)
-  console.log('halfCheckedKeys', halfCheckedKeys)
-}
+const menuKeys = ref<number[]>([])
 
 const formRef = ref<FormInstance>()
 const formState = reactive<CreateRoleRequest>({
